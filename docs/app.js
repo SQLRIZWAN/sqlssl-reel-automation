@@ -223,7 +223,7 @@ function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 
 /* ───────────── Instagram connect (redirect OAuth) ───────────── */
 function fillIgFields() {
-  document.getElementById('fbAppId').value = cfg.ig.appId;
+  document.getElementById('fbAppId').value = cfg.ig.appId || '1059718326900705';
   document.getElementById('fbAppSecret').value = cfg.ig.appSecret;
   document.getElementById('fbRedirect').value = cfg.ig.redirect || (location.origin + location.pathname);
   document.getElementById('fbScope').value = cfg.ig.scope;
@@ -238,7 +238,7 @@ function fillIgFields() {
   updateCronPreview();
 }
 function igFieldsFromForm() {
-  cfg.ig.appId = document.getElementById('fbAppId').value.trim();
+  cfg.ig.appId = document.getElementById('fbAppId').value.trim() || '1059718326900705';
   cfg.ig.appSecret = document.getElementById('fbAppSecret').value.trim();
   cfg.ig.redirect = document.getElementById('fbRedirect').value.trim() || (location.origin + location.pathname);
   cfg.ig.scope = document.getElementById('fbScope').value.trim();
@@ -289,11 +289,27 @@ async function handleIgCallback() {
       }
     }
     saveCfg();
-    log('igLog', cfg.ig.userId
-      ? `✅ INSTAGRAM CONNECTED ✓ user=${cfg.ig.username || cfg.ig.userId}`
-      : '⚠️ Token mila, par Instagram professional account page se linked nahi mila. Meta app me Instagram product add karo aur account link karo, phir dobara try karo.');
+    if (cfg.ig.userId) {
+      log('igLog', `✅ INSTAGRAM CONNECTED ✓ user=${cfg.ig.username || cfg.ig.userId}`);
+      log('igLog', '🔁 Apne aap: secrets sync + pehli reel upload run...');
+      setTimeout(async () => {
+        try {
+          if (!cfg.ghToken) { log('igLog', '⚠️ Sync टैब में GitHub PAT डालो → "सब सिंक करो" — uske baad upload chalega'); return; }
+          await syncAll();
+          await ghApi(`/repos/${cfg.repo}/actions/workflows/reel.yml/dispatches`, {
+            method: 'POST',
+            body: JSON.stringify({ ref: 'main', inputs: { slot: 'auto', mode: 'full' } }),
+          });
+          log('igLog', '🎬 UPLOAD RUN CHALU — 10-12 min me reel Instagram par! (स्टेटस टैब में देखो)');
+          setTimeout(loadRuns, 6000);
+        } catch (e) { log('igLog', '❌ auto-sync fail: ' + e.message); }
+      }, 900);
+    } else {
+      log('igLog', '⚠️ Token mila, par Instagram professional account Facebook Page se linked nahi mila.');
+    }
   } catch (e) {
-    log('igLog', '❌ Exchange fail: ' + e.message + ' — manual token paste karo (Graph API Explorer se).');
+    log('igLog', '❌ Exchange fail: ' + e.message);
+    log('igLog', '💡 Backup: address bar me ?code=... wala URL copy karke chat me paste karo — main khud exchange kar dunga. Ya Graph API Explorer se token banao.');
   }
   refreshDashboard();
   return true;
