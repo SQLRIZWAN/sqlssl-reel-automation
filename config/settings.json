@@ -37,14 +37,14 @@
     "volume": 2.2
   },
   "images": {
-    "provider_priority": ["pollinations", "openai", "gemini"],
+    "provider_priority": ["pollinations", "openai", "gemini", "openverse", "picsum"],
     "count_min": 18,
     "count_max": 25,
     "width": 1080,
     "height": 1920,
     "concurrency": 2,
-    "retries": 3,
-    "min_interval_seconds": 15,
+    "retries": 4,
+    "min_interval_seconds": 32,
     "style": "Cinematic cyberpunk anime style, 2D digital painting, thin glowing outlines, neon cyan/red/gold lighting, dramatic realistic composition, 9:16 vertical aspect ratio, main subject centered, mobile-safe padding, detailed environment, strong depth and cinematic contrast."
   },
   "overlay": {

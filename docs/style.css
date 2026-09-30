@@ -173,3 +173,16 @@ footer p { margin: 4px 0; }
   .top { flex-direction: column; align-items: flex-start; }
   .stat b { font-size: 16px; }
 }
+
+/* ── Setup checklist ── */
+.checklist { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.check {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line, #2a2f45);
+  background: rgba(255,255,255,.02); font-size: .95rem;
+}
+.check .mark { font-size: 1.05rem; line-height: 1.3; }
+.check b { color: var(--cyan, #6ee7ff); margin-right: 4px; }
+.check.done { border-color: rgba(43,255,136,.35); }
+.check.warn { border-color: rgba(255,204,77,.35); }
+.check.todo { border-color: rgba(255,143,163,.35); }

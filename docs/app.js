@@ -101,36 +101,87 @@ function refreshDashboard() {
 async function loadRuns() {
   const list = document.getElementById('runsList');
   const hint = document.getElementById('runsHint');
-  if (!cfg.ghToken) { hint.style.display = 'block'; list.innerHTML = ''; return; }
-  hint.style.display = 'none';
   list.innerHTML = '<p class="muted">Loading...</p>';
   try {
-    const r = await ghApi(`/repos/${cfg.repo}/actions/runs?per_page=6`);
-    list.innerHTML = (r.workflow_runs || []).map((x) => `
+    const r = await ghApi(`/repos/${cfg.repo}/actions/runs?per_page=8`);
+    hint.style.display = 'none';
+    const runs = r.workflow_runs || [];
+    list.innerHTML = runs.map((x) => `
       <div class="run">
         <span class="st ${x.status === 'completed' ? x.conclusion : x.status}">${x.status === 'completed' ? x.conclusion : x.status}</span>
-        <span>${x.display_title || x.name}</span>
+        <span>${esc(x.display_title || x.name)}</span>
         <span class="muted">${new Date(x.created_at).toLocaleString('hi-IN')}</span>
         <a href="${x.html_url}" target="_blank">खोलो →</a>
       </div>`).join('') || '<p class="muted">कोई run नहीं</p>';
   } catch (e) {
-    list.innerHTML = `<p class="muted">Error: ${esc(e.message)}</p>`;
+    list.innerHTML = '';
+    hint.style.display = 'block';
+    hint.textContent = 'Runs नहीं आईं: ' + e.message + (cfg.ghToken ? '' : ' (public repo पर बिना token भी चलनी चाहिए — rate limit हो सकता है)');
   }
 }
 document.getElementById('refreshRuns').addEventListener('click', loadRuns);
 
+async function loadLatestVideo() {
+  const el = document.getElementById('latestVideo');
+  try {
+    const c = await ghApi(`/repos/${cfg.repo}/commits/media`);
+    const fname = (c.files || []).map((f) => f.filename).find((n) => n.endsWith('.mp4')) || 'latest.mp4';
+    const url = `https://raw.githubusercontent.com/${cfg.repo}/media/${fname}`;
+    el.innerHTML = `<a href="${url}" target="_blank">▶️ ${esc(fname)}</a> — ${new Date(c.commit.author.date).toLocaleString('hi-IN')} <span class="muted">(download/upload दोनों के लिए यही URL इस्तेमाल होता है)</span>`;
+  } catch (e) {
+    el.textContent = 'अभी कोई video नहीं: ' + e.message;
+  }
+}
+
+/* ───────────── Setup checklist (0-click ka status) ───────────── */
+function renderChecklist() {
+  const el = document.getElementById('checklist');
+  if (!el) return;
+  const items = [];
+  items.push({ ok: !!cfg.ghToken, t: 'GitHub Token', d: cfg.ghToken ? 'सेव है' : 'Sync टैब में PAT डालो (repo+workflow scope)' });
+  items.push({ ok: !!cfg.ig.token, t: 'Instagram Connect', d: cfg.ig.token ? `जुड़ा है (${cfg.ig.username || 'token सेव'})` : 'कनेक्शन टैब → Instagram Connect (website login + allow)' });
+  const ai = [cfg.oa.key ? 'OpenAI' : '', cfg.gm.key ? 'Gemini' : ''].filter(Boolean);
+  items.push({ ok: ai.length > 0, warn: ai.length === 0, t: 'AI Keys (script/voice/images)', d: ai.length ? ai.join(' + ') + ' सेव है' : 'कनेक्शन टैब से Gemini/OpenAI key जोड़ो (फ्री) — बिना key भी free fallback चलता है' });
+  const dirty = cfg.syncedAt && (cfg.keysDirty || false);
+  const synced = !!cfg.syncedAt && !dirty;
+  items.push({ ok: synced, t: 'Secrets → GitHub Sync', d: synced ? `सिंक हो चुका (${new Date(cfg.syncedAt).toLocaleString('hi-IN')})` : cfg.syncedAt ? 'keys बदलीं — दोबारा "सब सिंक करो" दबाओ' : 'नीचे "सब सिंक करो" एक बार दबाओ — बस, फिर सब automatic' });
+  items.push({ ok: true, warn: false, t: 'Automation (cron)', d: `चालू — हर दिन ${cfg.schedule.morning} + ${cfg.schedule.evening} IST पर 2 reel, बिना website खोले` });
+  el.innerHTML = items.map((i) => `
+    <div class="check ${i.ok ? 'done' : (i.warn ? 'warn' : 'todo')}">
+      <span class="mark">${i.ok ? '✅' : (i.warn ? '⚠️' : '⬜')}</span>
+      <b>${i.t}</b> — ${i.d}
+    </div>`).join('');
+}
+
+document.getElementById('checkRefresh').addEventListener('click', () => { renderChecklist(); loadRuns(); loadLatestVideo(); });
+document.getElementById('checkSyncAll').addEventListener('click', () => {
+  activateTab('sync');
+  document.getElementById('syncAll').click();
+});
+document.getElementById('checkTestRun').addEventListener('click', async () => {
+  const logEl = 'checkLog';
+  log(logEl, '▶️ Test run dispatch ho raha hai...');
+  try {
+    await ghApi(`/repos/${cfg.repo}/actions/workflows/reel.yml/dispatches`, {
+      method: 'POST',
+      body: JSON.stringify({ ref: 'main', inputs: { slot: 'auto', mode: 'full' } }),
+    });
+    log(logEl, '✅ Dispatch OK — Actions टैब में देखो (1-2 मिनट में शुरू)');
+    setTimeout(loadRuns, 5000);
+  } catch (e) {
+    log(logEl, '❌ ' + e.message);
+  }
+});
+
 /* ───────────── GitHub API helper ───────────── */
 async function ghApi(path, opts = {}) {
-  if (!cfg.ghToken) throw new Error('GitHub token nahi hai — Sync tab me dalo');
-  const res = await fetch('https://api.github.com' + path, {
-    ...opts,
-    headers: {
-      Authorization: `Bearer ${cfg.ghToken}`,
-      Accept: 'application/vnd.github+json',
-      'Content-Type': 'application/json',
-      ...(opts.headers || {}),
-    },
-  });
+  const headers = {
+    Accept: 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    ...(opts.headers || {}),
+  };
+  if (cfg.ghToken) headers.Authorization = `Bearer ${cfg.ghToken}`;
+  const res = await fetch('https://api.github.com' + path, { ...opts, headers });
   if (!res.ok) throw new Error(`GitHub ${res.status}: ${(await res.text()).slice(0, 200)}`);
   return res.status === 204 ? null : res.json();
 }
@@ -190,6 +241,7 @@ async function handleIgCallback() {
     });
     r = await (await fetch(u)).json();
     if (r.error) throw new Error(r.error.message);
+    cfg.keysDirty = true;
     cfg.ig.token = r.access_token;
     log('igLog', '✅ Long-lived token mila — Instagram user dhoond rahe hain...');
     // pages → instagram business account
@@ -218,6 +270,7 @@ document.getElementById('igTest').addEventListener('click', async () => {
   try {
     const j = await (await fetch(`https://graph.facebook.com/v21.0/me?fields=id,username&access_token=${encodeURIComponent(tok)}`)).json();
     if (j.error) throw new Error(j.error.message);
+    cfg.keysDirty = true;
     cfg.ig.token = tok;
     cfg.ig.userId = cfg.ig.userId || j.id;
     saveCfg();
@@ -226,6 +279,7 @@ document.getElementById('igTest').addEventListener('click', async () => {
   refreshDashboard();
 });
 document.getElementById('igSaveManual').addEventListener('click', () => {
+  cfg.keysDirty = true;
   cfg.ig.token = document.getElementById('igTokenManual').value.trim();
   cfg.ig.userId = document.getElementById('igUserManual').value.trim();
   saveCfg('Instagram token localStorage me save');
@@ -252,7 +306,7 @@ window.addEventListener('pageshow', () => {
   }
 });
 document.getElementById('oaKey').addEventListener('change', (e) => {
-  cfg.oa.key = e.target.value.trim(); saveCfg('OpenAI key save'); refreshDashboard();
+  cfg.oa.key = e.target.value.trim(); cfg.keysDirty = true; saveCfg('OpenAI key save'); refreshDashboard(); renderChecklist();
 });
 document.getElementById('oaTest').addEventListener('click', async () => {
   const k = document.getElementById('oaKey').value.trim() || cfg.oa.key;
@@ -273,7 +327,7 @@ document.getElementById('gmRedirect').addEventListener('click', () => {
   const el = document.getElementById('gmKey');
   setTimeout(() => el && el.focus(), 400);
 });
-document.getElementById('gmKey').addEventListener('change', (e) => { cfg.gm.key = e.target.value.trim(); saveCfg('Gemini key save'); refreshDashboard(); });
+document.getElementById('gmKey').addEventListener('change', (e) => { cfg.gm.key = e.target.value.trim(); cfg.keysDirty = true; saveCfg('Gemini key save'); refreshDashboard(); renderChecklist(); });
 document.getElementById('gmTest').addEventListener('click', async () => {
   const k = document.getElementById('gmKey').value.trim() || cfg.gm.key;
   if (!k) return log('gmLog', '❌ Key nahi hai');
@@ -471,10 +525,17 @@ async function setRepoSecret(name, value) {
 
 async function syncSecrets() {
   const envs = ['INSTAGRAM_ACCESS_TOKEN', 'IG_USER_ID', 'OPENAI_API_KEY', 'GEMINI_API_KEY', 'POLLINATIONS_TOKEN', 'NEWSAPI_KEY'];
+  let any = false;
   for (const env of envs) {
     const v = secretFor(env);
-    if (v) await setRepoSecret(env, v);
+    if (v) { await setRepoSecret(env, v); any = true; }
     else log('syncLog', `   (skip ${env} — khali hai)`);
+  }
+  if (any) {
+    cfg.syncedAt = new Date().toISOString();
+    cfg.keysDirty = false;
+    saveCfg();
+    renderChecklist();
   }
 }
 
@@ -499,6 +560,10 @@ async function syncAll() {
     await syncWorkflowCron();
     await syncSecrets();
     await enablePagesNow();
+    cfg.syncedAt = cfg.syncedAt || new Date().toISOString();
+    cfg.keysDirty = false;
+    saveCfg();
+    renderChecklist();
     log('syncLog', '🏁 SAB SYNC COMPLETE ✓ — Actions har 4 AM + 4 PM IST (aapke set time) pe chalega');
   } catch (e) {
     log('syncLog', '❌ SYNC FAIL: ' + e.message);
@@ -520,11 +585,15 @@ document.getElementById('clearAll').addEventListener('click', () => {
 (async function init() {
   fillIgFields();
   refreshDashboard();
+  renderChecklist();
   activateTab(cfg.activeTab || 'dash');
   await handleIgCallback();
   refreshDashboard();
   if (cfg.promptText) document.getElementById('promptText').value = cfg.promptText;
   else document.getElementById('promptText').value = '# SQL.SSL.2027.TXT — "Repo से लोड करो" button dabao...';
-  if (cfg.ghToken) loadRuns();
+  loadRuns();
+  loadLatestVideo();
   setInterval(refreshDashboard, 60000);
+  setInterval(() => { loadRuns(); renderChecklist(); }, 90000);
+  setInterval(loadLatestVideo, 300000);
 })();

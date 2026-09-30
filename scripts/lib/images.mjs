@@ -18,17 +18,46 @@ function fullPrompt(moment, settings, index) {
   ].filter(Boolean).join(' ');
 }
 
+async function saveRaw(buf, i) {
+  const raw = path.join(OUT, `raw_${i}.png`);
+  fs.writeFileSync(raw, buf);
+  return raw;
+}
+
+async function fetchImage(url, opts = {}) {
+  const res = await fetch(url, { ...opts, signal: AbortSignal.timeout(150000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  const isJpeg = buf[0] === 0xff && buf[1] === 0xd8;
+  const isPng = buf[0] === 0x89 && buf[1] === 0x50;
+  if (buf.length < 8000 || !(isJpeg || isPng)) throw new Error(`not an image (${buf.length}b)`);
+  return buf;
+}
+
 async function pollinations(moment, settings, i) {
   const prompt = encodeURIComponent(fullPrompt(moment, settings, i));
-  let url = `https://image.pollinations.ai/prompt/${prompt}?width=${settings.images.width}&height=${settings.images.height}&model=flux&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation`;
+  const qs = `width=${settings.images.width}&height=${settings.images.height}&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation`;
   const opts = {};
   if (process.env.POLLINATIONS_TOKEN) {
     opts.headers = { Authorization: `Bearer ${process.env.POLLINATIONS_TOKEN}` };
   }
-  const buf = await fetchBuffer(url, opts, 4);
-  const raw = path.join(OUT, `raw_${i}.png`);
-  fs.writeFileSync(raw, buf);
-  return raw;
+  try {
+    return await saveRaw(await fetchImage(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, opts), i);
+  } catch (e1) {
+    // kuch nodes sirf POST /prompt route support karte hain — fallback
+    info(`    image ${i} pollinations GET fail (${e1.message}) → POST try`);
+    const res = await fetch(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, {
+      ...opts,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+      body: '{}',
+      signal: AbortSignal.timeout(150000),
+    });
+    if (!res.ok) throw new Error(`POST HTTP ${res.status} (GET: ${e1.message})`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length < 8000 || buf[0] !== 0xff) throw new Error(`POST not an image (${buf.length}b, GET: ${e1.message})`);
+    return await saveRaw(buf, i);
+  }
 }
 
 async function openaiImg(moment, settings, i) {
@@ -54,40 +83,96 @@ async function openaiImg(moment, settings, i) {
 async function geminiImg(moment, settings, i) {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY missing');
-  const j = await fetchJson(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: fullPrompt(moment, settings, i) }] }],
-        generationConfig: { responseModalities: ['IMAGE', 'TEXT'] },
-      }),
-    }, 2
-  );
-  const part = j.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data || p.inline_data?.data);
-  const b64 = part?.inlineData?.data || part?.inline_data?.data;
-  if (!b64) throw new Error('Gemini image: no data');
-  const raw = path.join(OUT, `raw_${i}.png`);
-  fs.writeFileSync(raw, Buffer.from(b64, 'base64'));
-  return raw;
+  const models = ['gemini-2.5-flash-image', 'gemini-2.0-flash-preview-image-generation'];
+  let lastErr = null;
+  for (const model of models) {
+    try {
+      const j = await fetchJson(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: fullPrompt(moment, settings, i) }] }],
+            generationConfig: { responseModalities: ['IMAGE', 'TEXT'] },
+          }),
+        }, 2
+      );
+      const part = j.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data || p.inline_data?.data);
+      const b64 = part?.inlineData?.data || part?.inline_data?.data;
+      if (!b64) throw new Error(`${model}: no data`);
+      const raw = path.join(OUT, `raw_${i}.png`);
+      fs.writeFileSync(raw, Buffer.from(b64, 'base64'));
+      return raw;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr;
 }
 
-const PROVIDERS = { pollinations: pollinations, openai: openaiImg, gemini: geminiImg };
+const STOP = new Set(['the', 'a', 'an', 'and', 'or', 'of', 'in', 'on', 'to', 'with', 'that', 'this', 'showing', 'shows', 'visual', 'style', 'scene', 'must', 'avoid', 'shot', 'like', 'over', 'into', 'from', 'for', 'at', 'by', 'as', 'be', 'are', 'was', 'were', 'his', 'her', 'their', 'has', 'have', 'been', 'being', 'also', 'after', 'before', 'during', 'through', 'says', 'said']);
+
+function searchQuery(moment) {
+  const words = `${moment.scene || ''} ${moment.voiceLine || ''}`
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((w) => w.length >= 4 && !STOP.has(w));
+  return [...new Set(words)].slice(0, 6).join(' ') || 'technology computer';
+}
+
+async function openverse(moment, settings, i) {
+  const full = searchQuery(moment);
+  let lastErr = null;
+  for (const q of [full.split(' ').slice(0, 4).join(' '), full.split(' ').slice(0, 2).join(' ')]) {
+    const j = await fetchJson(
+      `https://api.openverse.org/v1/images/?q=${encodeURIComponent(q)}&license_type=commercial&page_size=10&mature=false`,
+      {}, 2
+    );
+    const results = (j.results || []).filter((r) => r.url);
+    if (!results.length) { lastErr = new Error(`0 results for "${q}"`); continue; }
+    for (let k = 0; k < Math.min(3, results.length); k++) {
+      const r = results[(i + k) % results.length];
+      try {
+        const buf = await fetchImage(r.url, {}, 1);
+        return await saveRaw(buf, i);
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+  }
+  throw new Error(`openverse: ${lastErr?.message || 'fail'}`);
+}
+
+async function picsum(moment, settings, i) {
+  const buf = await fetchImage(
+    `https://picsum.photos/seed/sqlssl${i * 31}/${settings.images.width}/${settings.images.height}`,
+    {}, 1
+  );
+  return await saveRaw(buf, i);
+}
+
+const PROVIDERS = { pollinations: pollinations, openai: openaiImg, gemini: geminiImg, openverse, picsum };
 let lastReqAt = 0;
+let pollFail = 0;
+const runDead = new Set();
 
 async function genOne(moment, settings, i) {
-  for (const name of settings.images.provider_priority) {
-    const retries = settings.images.retries + 2;
-    for (let a = 0; a < retries; a++) {
+  for (let round = 0; round < 4; round++) {
+    let tried = 0;
+    for (const name of settings.images.provider_priority) {
+      if (runDead.has(name)) continue;
+      tried += 1;
       try {
-        // anonymous tier: 1 req / 15s — spacing lagao (token ho to kam)
-        const since = Date.now() - lastReqAt;
-        const gap = (process.env.POLLINATIONS_TOKEN ? 6 : settings.images.min_interval_seconds || 15) * 1000;
-        if (since < gap && name === 'pollinations') await sleep(gap - since);
+        if (name === 'pollinations') {
+          const since = Date.now() - lastReqAt;
+          const gap = (process.env.POLLINATIONS_TOKEN ? 6 : settings.images.min_interval_seconds || 32) * 1000;
+          if (since < gap) await sleep(gap - since);
+        }
         const raw = await PROVIDERS[name](moment, settings, i);
         lastReqAt = Date.now();
-        // normalize to exact 1080x1920
+        if (name === 'pollinations') pollFail = 0;
         const final = path.join(OUT, `image_${i}.png`);
         run('ffmpeg', [
           '-y', '-i', raw,
@@ -96,20 +181,44 @@ async function genOne(moment, settings, i) {
         ]);
         fs.rmSync(raw, { force: true });
         if (fs.statSync(final).size < 5000) throw new Error('image too small');
+        if (name === 'pollinations') info(`  image ${i} via ${name} ✓`);
         return final;
       } catch (e) {
-        info(`    image ${i} via ${name} try ${a + 1} failed: ${e.message}`);
+        info(`    image ${i} via ${name} try ${round + 1} failed: ${e.message}`);
         lastReqAt = Date.now();
-        await sleep(3000 * (a + 1));
+        if (/missing/i.test(e.message)) runDead.add(name);
+        if (name === 'pollinations') {
+          pollFail += 1;
+          const maxFails = process.env.POLLINATIONS_TOKEN ? 8 : 3;
+          if (pollFail >= maxFails) {
+            runDead.add('pollinations');
+            info('    pollinations quota/IP limit — is run ke liye skip (POLLINATIONS_TOKEN se ye limit hatti hai)');
+          }
+          await sleep(27000 + Math.floor(Math.random() * 7000));
+        } else if (name === 'openverse' && round >= 2) {
+          runDead.add('openverse');
+        } else {
+          await sleep(2500);
+        }
       }
     }
+    if (tried === 0 || runDead.size >= settings.images.provider_priority.length) break;
   }
   throw new Error(`Image ${i}: sab providers fail`);
 }
 
 export async function makeImages(settings, moments) {
   const n = moments.length;
-  info(`  ${n} images ban rahi hain (${settings.images.provider_priority.join(' → ')})`);
+  runDead.clear();
+  pollFail = 0;
+  lastReqAt = 0;
+  // Gemini key ho to pehle gemini (fast, free tier, topical art) — quota waste nahi hota
+  let chain = [...settings.images.provider_priority];
+  if (process.env.GEMINI_API_KEY && chain.includes('gemini')) {
+    chain = ['gemini', ...chain.filter((c) => c !== 'gemini')];
+  }
+  info(`  ${n} images ban rahi hain (${chain.join(' → ')})`);
+  const runSettings = { ...settings, images: { ...settings.images, provider_priority: chain } };
   const conc = settings.images.concurrency;
   const files = new Array(n);
   let next = 0;
@@ -117,7 +226,7 @@ export async function makeImages(settings, moments) {
   async function worker() {
     while (next < n) {
       const i = next++;
-      files[i] = await genOne(moments[i], settings, i + 1);
+      files[i] = await genOne(moments[i], runSettings, i + 1);
       if ((i + 1) % 5 === 0 || i + 1 === n) info(`  images: ${i + 1}/${n} ✓`);
     }
   }

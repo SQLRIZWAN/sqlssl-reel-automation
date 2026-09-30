@@ -37,6 +37,18 @@
 
 <!-- ═══════════ डैशबोर्ड ═══════════ -->
 <section class="panel active" id="panel-dash">
+  <div class="card" id="setupCard">
+    <h2>🧭 Setup Checklist — एक बार सेटअप, फिर 0-click</h2>
+    <p class="muted">Website खोलने की ज़रूरत नहीं — सब हो जाने के बाद GitHub Actions हर दिन 2 reel बनाकर Instagram पर upload करता रहेगा। नीचे जो-जो pending है वही करो।</p>
+    <div id="checklist" class="checklist">लोड हो रहा है...</div>
+    <div class="btn-row">
+      <button class="btn primary" id="checkSyncAll">🚀 अभी सब सिंक करो</button>
+      <button class="btn" id="checkTestRun">▶️ एक test reel अभी चलाओ</button>
+      <button class="btn" id="checkRefresh">🔄 रिफ्रेश</button>
+    </div>
+    <div class="log" id="checkLog"></div>
+  </div>
+
   <div class="cards" id="dashCards">
     <div class="card stat"><label>अगली सुबह वाली रील</label><b id="nextMorning">—</b><small>04:00 IST (22:30 UTC)</small></div>
     <div class="card stat"><label>अगली शाम वाली रील</label><b id="nextEvening">—</b><small>16:00 IST (10:30 UTC)</small></div>
@@ -46,9 +58,14 @@
 
   <div class="card">
     <h2>📊 GitHub Actions — पिछली रन्स</h2>
-    <p class="muted" id="runsHint">देखने के लिए GitHub Token जोड़ें (Sync टैब → टोकन डालें)।</p>
+    <p class="muted" id="runsHint">लोड हो रहा है...</p>
     <div id="runsList" class="runs"></div>
     <button class="btn" id="refreshRuns">🔄 रिफ्रेश करो</button>
+  </div>
+
+  <div class="card">
+    <h2>🎬 Latest video (media branch)</h2>
+    <div id="latestVideo" class="muted">लोड हो रहा है...</div>
   </div>
 
   <div class="card">
@@ -57,7 +74,7 @@
       <li><b>STEP 0</b> — 30-दिन calendar के हिसाब से आज की LIVE न्यूज़ (Google News RSS, फ्री)</li>
       <li><b>STEP 1</b> — 90-120 शब्द हिंदी script + 18-25 moments + caption + 10 hashtags</li>
       <li><b>STEP 2</b> — Voice: Gemini TTS (Rasalgethi) → OpenAI → Edge TTS fallback, duration नापी जाती है</li>
-      <li><b>STEP 3</b> — 18-25 images (Pollinations फ्री) + हर image पर center Hindi overlay</li>
+      <li><b>STEP 3</b> — 18-25 images (Gemini फ्री → Pollinations → OpenAI → Openverse/Picsum fallback) + हर image पर center Hindi overlay</li>
       <li><b>STEP 3B</b> — Ken Burns zoom/pan → video_no_audio.mp4</li>
       <li><b>STEP 4-5</b> — Caption + 3-tier hashtags + dark cyberpunk BGM (80-100 BPM)</li>
       <li><b>STEP 6</b> — Mix: Voice 2.2 / BGM 0.30 → final = voice duration → <b>11-point verify</b></li>
