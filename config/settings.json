@@ -19,25 +19,52 @@
     "max_words": 120,
     "moments_min": 18,
     "moments_max": 25,
-    "llm_priority": ["openai", "gemini", "template"],
+    "llm_priority": [
+      "openai",
+      "gemini",
+      "template"
+    ],
     "openai_model": "gpt-4o-mini",
     "gemini_model": "gemini-2.5-flash",
-    "banned_openers": ["रुकिए", "रुक जाइए", "सुनिए", "ध्यान दीजिए", "नमस्ते", "हेलो", "hello", "hi ", "अस्सलाम", "जय हिन्द", "welcome"]
+    "banned_openers": [
+      "रुकिए",
+      "रुक जाइए",
+      "सुनिए",
+      "ध्यान दीजिए",
+      "नमस्ते",
+      "हेलो",
+      "hello",
+      "hi ",
+      "अस्सलाम",
+      "जय हिन्द",
+      "welcome"
+    ]
   },
   "voice": {
-    "priority": ["gemini", "openai", "edge"],
+    "priority": [
+      "gemini",
+      "gtrans",
+      "openai",
+      "edge"
+    ],
     "gemini_model": "gemini-2.5-flash-preview-tts",
     "gemini_voice": "Rasalgethi",
     "openai_model": "gpt-4o-mini-tts",
     "openai_voice": "onyx",
     "edge_voice": "hi-IN-MadhurNeural",
-    "edge_rate": "-12%",
-    "edge_pitch": "-4Hz",
+    "edge_rate": "-5%",
+    "edge_pitch": "0Hz",
     "directors_notes": "Speak in a deep, heavy, serious and commanding male voice — slow and deliberate pacing, with weight and gravity in every word, like a confident expert delivering an urgent warning. Add natural pauses for emphasis on important words. Tone should sound grave and cautionary, not cheerful or upbeat — like a trusted insider revealing something serious in a calm but intense way.",
     "volume": 2.2
   },
   "images": {
-    "provider_priority": ["pollinations", "openai", "gemini", "openverse", "picsum"],
+    "provider_priority": [
+      "pollinations",
+      "openai",
+      "gemini",
+      "openverse",
+      "picsum"
+    ],
     "count_min": 18,
     "count_max": 25,
     "width": 1080,
@@ -55,7 +82,10 @@
     "y_center_ratio": 0.47
   },
   "bgm": {
-    "provider_priority": ["asset", "synth"],
+    "provider_priority": [
+      "asset",
+      "synth"
+    ],
     "bpm": 90,
     "volume": 0.3,
     "fade_in": 3,
@@ -75,12 +105,28 @@
     "poll_tries": 60
   },
   "hashtags": {
-    "large": ["#cybersecurity", "#hacking", "#scamalert"],
-    "medium": ["#indiacybersecurity", "#onlinesafety", "#datasecurity", "#cyberawareness"],
-    "niche": ["#sqlssl", "#cybernewshindi", "#saibarsurakshahindu"]
+    "large": [
+      "#cybersecurity",
+      "#hacking",
+      "#scamalert"
+    ],
+    "medium": [
+      "#indiacybersecurity",
+      "#onlinesafety",
+      "#datasecurity",
+      "#cyberawareness"
+    ],
+    "niche": [
+      "#sqlssl",
+      "#cybernewshindi",
+      "#saibarsurakshahindu"
+    ]
   },
   "news": {
-    "provider_priority": ["google-news-rss", "newsapi"],
+    "provider_priority": [
+      "google-news-rss",
+      "newsapi"
+    ],
     "language": "hi",
     "region": "IN",
     "max_age_days": 3,

@@ -81,12 +81,60 @@ async function edgeTTS(settings, text, outFile) {
   fs.rmSync(mp3, { force: true });
 }
 
+// Google Translate TTS (bina key, Hindi ki sabse saaf free voice) — chunks me stitch
+async function gtransTTS(settings, text, outFile) {
+  const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+  const clean = text.replace(/\[pauses\]/g, '');
+  const parts = clean.split(/(?<=[।?!])\s+/).map((s) => s.trim()).filter(Boolean);
+  const chunks = [];
+  for (let p of parts) {
+    while (p.length > 170) {
+      let cut = Math.max(p.lastIndexOf(',', 160), p.lastIndexOf(' ', 160));
+      if (cut < 40) cut = 160;
+      chunks.push(p.slice(0, cut).trim());
+      p = p.slice(cut + 1).trim();
+    }
+    if (p) chunks.push(p);
+  }
+  const dir = path.join(OUT, 'gtrans');
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
+  const files = [];
+  for (let i = 0; i < chunks.length; i++) {
+    const u = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=hi&client=tw-ob&q=' + encodeURIComponent(chunks[i]);
+    let done = false;
+    for (let a = 0; a < 3 && !done; a++) {
+      const res = await fetch(u, { headers: { 'User-Agent': UA, Referer: 'https://translate.google.com/' } });
+      if (res.ok) {
+        const buf = Buffer.from(await res.arrayBuffer());
+        if (buf.length > 800) {
+          const f = path.join(dir, `c${String(i).padStart(3, '0')}.mp3`);
+          fs.writeFileSync(f, buf);
+          files.push(f);
+          done = true;
+          break;
+        }
+      }
+      await sleep(1500 * (a + 1));
+    }
+    if (!done) throw new Error(`gtrans chunk ${i} fail (${chunks.length} chunks)`);
+    await sleep(280);
+  }
+  const list = path.join(dir, 'list.txt');
+  fs.writeFileSync(list, files.map((f) => `file '${f}'`).join('\n'));
+  run('ffmpeg', [
+    '-y', '-f', 'concat', '-safe', '0', '-i', list,
+    '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11',
+    '-ar', '44100', '-ac', '1', outFile,
+  ]);
+}
+
 export async function makeVoice(settings, scriptText) {
   ensureDir(OUT);
   const outFile = path.join(OUT, 'narration.wav');
   fs.rmSync(outFile, { force: true });
 
-  const engines = { gemini: geminiTTS, openai: openaiTTS, edge: edgeTTS };
+  const engines = { gemini: geminiTTS, gtrans: gtransTTS, openai: openaiTTS, edge: edgeTTS };
   const errors = [];
   for (const name of settings.voice.priority) {
     try {

@@ -6,17 +6,17 @@ import { OUT, info, fetchBuffer, fetchJson, sleep, run } from './util.mjs';
 function fullPrompt(moment, settings, index) {
   const brandHint =
     'Natural @sql.ssl / SQL.SSL branding embedded in the scene (monitor corner signature, jacket emblem, phone screen signature or code line) — not promotional, part of the environment. No login screen, no hacked-account screen.';
-  const overlayNote = '';
   return [
-    moment.scene,
+    `Cyber-security and ethical hacking themed digital illustration: ${moment.scene}`,
     `Scene must visually match this exact voice line: "${moment.voiceLine}"`,
-    `Avoid: ${moment.avoid || 'generic random hacker'}`,
-    brandHint,
+    'Clear hacking imagery: computer screens with code, server racks, hooded figures at keyboards, glowing red alerts, network maps, firewalls, data streams — choose what fits the line.',
     settings.images.style,
-    `Vertical 9:16 illustration number ${index}, fully painted, no photograph.`,
-    overlayNote,
+    brandHint,
+    `Vertical 9:16 illustration number ${index}, fully painted digital art, subject centered with tall composition, mobile-safe. Do NOT include: ${moment.avoid || 'photorealistic photo, blurry, watermark, captions, extra fingers'}`,
   ].filter(Boolean).join(' ');
 }
+
+const NEGATIVE = 'photograph, realistic photo, blurry, watermark, logo text, captions, landscape, cropped subject, low quality, deformed hands';
 
 async function saveRaw(buf, i) {
   const raw = path.join(OUT, `raw_${i}.png`);
@@ -36,7 +36,7 @@ async function fetchImage(url, opts = {}) {
 
 async function pollinations(moment, settings, i) {
   const prompt = encodeURIComponent(fullPrompt(moment, settings, i));
-  const qs = `width=${settings.images.width}&height=${settings.images.height}&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation`;
+  const qs = `width=${settings.images.width}&height=${settings.images.height}&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation&negative_prompt=${encodeURIComponent(NEGATIVE)}`;
   const opts = {};
   if (process.env.POLLINATIONS_TOKEN) {
     opts.headers = { Authorization: `Bearer ${process.env.POLLINATIONS_TOKEN}` };
