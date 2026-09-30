@@ -172,7 +172,8 @@ function renderChecklist() {
   if (!el) return;
   const items = [];
   items.push({ ok: !!cfg.ghToken, t: 'GitHub Token', d: cfg.ghToken ? 'सेव है' : 'Sync टैब में PAT डालो (repo+workflow scope)' });
-  items.push({ ok: !!cfg.ig.token, t: 'Instagram Connect', d: cfg.ig.token ? `जुड़ा है (${cfg.ig.username || 'token सेव'})` : 'कनेक्शन टैब → Instagram Connect (website login + allow)' });
+  const hasCookie = !!(cfg.extra && cfg.extra.IG_COOKIES);
+  items.push({ ok: hasCookie || !!cfg.ig.token, warn: !hasCookie && !cfg.ig.token, t: 'Instagram Upload', d: hasCookie ? '🍪 Cookie login सेव है (upload cookie से + Graph API backup)' : cfg.ig.token ? 'Graph API token सेव है — कनेक्शन टैब से 🍪 Cookie जोड़ो (recommended)' : 'कनेक्शन टैब → 🍪 Cookie login (recommended) या Instagram Connect' });
   const ai = [cfg.oa.key ? 'OpenAI' : '', cfg.gm.key ? 'Gemini' : ''].filter(Boolean);
   items.push({ ok: ai.length > 0, warn: ai.length === 0, t: 'AI Keys (script/voice/images)', d: ai.length ? ai.join(' + ') + ' सेव है' : 'कनेक्शन टैब से Gemini/OpenAI key जोड़ो (फ्री) — बिना key भी free fallback चलता है' });
   const dirty = cfg.syncedAt && (cfg.keysDirty || false);
@@ -339,6 +340,43 @@ document.getElementById('igSaveManual').addEventListener('click', () => {
 document.getElementById('igDisconnect').addEventListener('click', () => {
   cfg.ig.token = ''; cfg.ig.userId = ''; cfg.ig.username = '';
   saveCfg(); log('igLog', '❌ Disconnected'); fillIgFields(); refreshDashboard();
+});
+
+/* ───────────── Instagram Cookie Login (recommended upload path) ───────────── */
+function readCookieForm() {
+  const get = id => (document.getElementById(id)?.value || '').trim();
+  const ck = {
+    sessionid: get('ckSessionid'),
+    csrftoken: get('ckCsrf'),
+    ds_user_id: get('ckDsUserId'),
+    mid: get('ckMid'),
+  };
+  Object.keys(ck).forEach(k => { if (!ck[k]) delete ck[k]; });
+  return ck;
+}
+document.getElementById('ckSave').addEventListener('click', async () => {
+  const ck = readCookieForm();
+  if (!ck.sessionid) { log('ckLog', '❌ sessionid zaroori hai — wahi paste karo'); return; }
+  cfg.extra.IG_COOKIES = JSON.stringify(ck);
+  cfg.keysDirty = true;
+  saveCfg('Instagram cookies localStorage me save');
+  log('ckLog', `🍪 cookies save ✓ (sessionid ${ck.sessionid.slice(0, 6)}...) — GitHub Secrets me push...`);
+  try {
+    await setRepoSecret('IG_COOKIES', cfg.extra.IG_COOKIES);
+    cfg.keysDirty = false; cfg.syncedAt = new Date().toISOString(); saveCfg();
+    log('ckLog', '✅ IG_COOKIES secret set ✓ — ab reel upload cookie se hoga (Graph API backup rahega)');
+    renderChecklist();
+  } catch (e) {
+    log('ckLog', '⚠️ Save localStorage me ho gaya, par secret push fail: ' + e.message + ' → "सिंक" tab se "🚀 सब सिंक करो" दबाओ');
+  }
+  refreshDashboard();
+});
+document.getElementById('ckClear').addEventListener('click', () => {
+  delete cfg.extra.IG_COOKIES;
+  ['ckSessionid', 'ckCsrf', 'ckDsUserId', 'ckMid'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  saveCfg('IG_COOKIES hataya (secret abhi bhi hai — sync se delete nahi hota)');
+  log('ckLog', '❌ Cookie हटा दी — upload wapas Graph API par aa jayega');
+  refreshDashboard();
 });
 
 /* ───────────── OpenAI connect (redirect) ───────────── */
@@ -574,7 +612,7 @@ async function setRepoSecret(name, value) {
 }
 
 async function syncSecrets() {
-  const envs = ['INSTAGRAM_ACCESS_TOKEN', 'IG_USER_ID', 'OPENAI_API_KEY', 'GEMINI_API_KEY', 'POLLINATIONS_TOKEN', 'NEWSAPI_KEY'];
+  const envs = ['IG_COOKIES', 'INSTAGRAM_ACCESS_TOKEN', 'IG_USER_ID', 'OPENAI_API_KEY', 'GEMINI_API_KEY', 'POLLINATIONS_TOKEN', 'NEWSAPI_KEY'];
   let any = false;
   for (const env of envs) {
     const v = secretFor(env);

@@ -1,7 +1,10 @@
 // tts.mjs — STEP 2: Gemini TTS (Rasalgethi) → OpenAI TTS → Edge TTS fallback
 import fs from 'node:fs';
 import path from 'node:path';
-import { OUT, info, run, ffprobeDuration, ensureDir, sleep } from './util.mjs';
+import { ROOT, OUT, info, run, runBash, ffprobeDuration, ensureDir, sleep } from './util.mjs';
+
+// "deep, heavy, commanding" tone (prompt-file rule) + loudness normalize
+const HEAVY_EQ = 'bass=g=4:f=110,equalizer=f=3200:t=q:w=1.2:g=2,loudnorm=I=-16:TP=-1.5:LRA=11';
 
 function base64ToWav(b64, outFile) {
   const raw = path.join(OUT, 'tts_raw.bin');
@@ -68,16 +71,17 @@ async function edgeTTS(settings, text, outFile) {
   const mp3 = path.join(OUT, 'tts_edge.mp3');
   fs.rmSync(mp3, { force: true });
   const speak = text;
+  const pitch = /^[+-]/.test(String(v.edge_pitch || '')) ? v.edge_pitch : `+${v.edge_pitch || '0Hz'}`;
   await run('python3', [
     '-m', 'edge_tts',
     `--voice=${v.edge_voice}`,
     `--rate=${v.edge_rate}`,
-    `--pitch=${v.edge_pitch}`,
+    `--pitch=${pitch}`,
     `--text=${speak}`,
     `--write-media=${mp3}`,
   ]);
   if (!fs.existsSync(mp3) || fs.statSync(mp3).size < 1000) throw new Error('edge-tts: empty output');
-  run('ffmpeg', ['-y', '-i', mp3, '-ar', '44100', '-ac', '1', outFile]);
+  run('ffmpeg', ['-y', '-i', mp3, '-af', HEAVY_EQ, '-ar', '44100', '-ac', '1', outFile]);
   fs.rmSync(mp3, { force: true });
 }
 
@@ -129,12 +133,37 @@ async function gtransTTS(settings, text, outFile) {
   ]);
 }
 
+// Piper offline Hindi male (Rohan) — no-key backup jab edge/gemini dono down ho
+async function piperTTS(settings, text, outFile) {
+  const cache = path.join(ROOT, '.piper-cache');
+  const model = path.join(cache, 'hi_IN-rohan-medium.onnx');
+  const cfgJson = model + '.json';
+  if (!fs.existsSync(model) || !fs.existsSync(cfgJson) || fs.statSync(model).size < 1000000) {
+    ensureDir(cache);
+    info('    piper: Hindi male model download ho rahi hai (~63MB, sirf pehli baar)...');
+    const base = 'https://huggingface.co/rhasspy/piper-voices/resolve/main/hi/hi_IN/rohan/medium/hi_IN-rohan-medium.onnx';
+    run('curl', ['-sL', '--retry', '3', '-o', model, base]);
+    run('curl', ['-sL', '--retry', '3', '-o', cfgJson, base + '.json']);
+    if (fs.statSync(model).size < 1000000) throw new Error('piper model download failed');
+  }
+  try { run('python3', ['-c', 'import piper']); }
+  catch { run('python3', ['-m', 'pip', 'install', '--quiet', '--break-system-packages', 'piper-tts']); }
+
+  const raw = path.join(OUT, 'tts_piper_raw.wav');
+  fs.rmSync(raw, { force: true });
+  const ls = settings.voice.piper_length_scale || 1.1;
+  runBash(`python3 -m piper -m ${JSON.stringify(model)} -f ${JSON.stringify(raw)} --length-scale ${ls} <<'PIPEREOF'\n${text}\nPIPEREOF`);
+  if (!fs.existsSync(raw) || fs.statSync(raw).size < 1000) throw new Error('piper: empty output');
+  run('ffmpeg', ['-y', '-i', raw, '-af', HEAVY_EQ, '-ar', '44100', '-ac', '1', outFile]);
+  fs.rmSync(raw, { force: true });
+}
+
 export async function makeVoice(settings, scriptText) {
   ensureDir(OUT);
   const outFile = path.join(OUT, 'narration.wav');
   fs.rmSync(outFile, { force: true });
 
-  const engines = { gemini: geminiTTS, gtrans: gtransTTS, openai: openaiTTS, edge: edgeTTS };
+  const engines = { gemini: geminiTTS, gtrans: gtransTTS, openai: openaiTTS, edge: edgeTTS, piper: piperTTS };
   const errors = [];
   for (const name of settings.voice.priority) {
     try {

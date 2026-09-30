@@ -138,3 +138,16 @@ export async function uploadToInstagram(settings, { videoUrl, caption, story = f
 
   return { reelId: pub.id, storyId, userId };
 }
+
+// Cookie-based upload (Instagram web session — user ki pasand) — instagrapi
+export function uploadViaCookie(videoPath, caption) {
+  const raw = (process.env.IG_COOKIES || '').trim();
+  if (!raw) throw new Error('IG_COOKIES missing');
+  if (!fs.existsSync(videoPath)) throw new Error('video file not found: ' + videoPath);
+  const capFile = path.join(path.dirname(videoPath), 'cookie_caption.txt');
+  fs.writeFileSync(capFile, caption, 'utf8');
+  const out = run('python3', [path.join(ROOT, 'scripts', 'upload_ig.py'), videoPath, capFile]);
+  const m = out.match(/REEL_PUBLISHED id=(\S+) code=(\S+) user=(\S+)/);
+  if (!m) throw new Error('cookie upload: REEL_PUBLISHED line nahi mili: ' + out.slice(-500));
+  return { reelId: m[1], code: m[2], username: m[3], via: 'cookie' };
+}

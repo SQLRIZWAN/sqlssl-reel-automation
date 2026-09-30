@@ -43,9 +43,10 @@
   "voice": {
     "priority": [
       "gemini",
-      "gtrans",
+      "edge",
+      "piper",
       "openai",
-      "edge"
+      "gtrans"
     ],
     "gemini_model": "gemini-2.5-flash-preview-tts",
     "gemini_voice": "Rasalgethi",
@@ -53,9 +54,10 @@
     "openai_voice": "onyx",
     "edge_voice": "hi-IN-MadhurNeural",
     "edge_rate": "-5%",
-    "edge_pitch": "0Hz",
+    "edge_pitch": "+0Hz",
     "directors_notes": "Speak in a deep, heavy, serious and commanding male voice — slow and deliberate pacing, with weight and gravity in every word, like a confident expert delivering an urgent warning. Add natural pauses for emphasis on important words. Tone should sound grave and cautionary, not cheerful or upbeat — like a trusted insider revealing something serious in a calm but intense way.",
-    "volume": 2.2
+    "volume": 2.2,
+    "piper_length_scale": 1.1
   },
   "images": {
     "provider_priority": [
@@ -72,7 +74,12 @@
     "concurrency": 2,
     "retries": 4,
     "min_interval_seconds": 32,
-    "style": "Cinematic cyberpunk anime style, 2D digital painting, thin glowing outlines, neon cyan/red/gold lighting, dramatic realistic composition, 9:16 vertical aspect ratio, main subject centered, mobile-safe padding, detailed environment, strong depth and cinematic contrast."
+    "style": "Cinematic cyberpunk anime style, 2D digital painting, thin glowing outlines, neon cyan/red/gold lighting, dramatic realistic composition, 9:16 vertical aspect ratio, main subject centered, mobile-safe padding, detailed environment, strong depth and cinematic contrast.",
+    "pollinations_models": [
+      "flux",
+      "turbo",
+      ""
+    ]
   },
   "overlay": {
     "font_size": 84,

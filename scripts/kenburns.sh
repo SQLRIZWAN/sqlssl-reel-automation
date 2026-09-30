@@ -31,7 +31,7 @@ for i in $(seq 1 "$NUM_IMAGES"); do
   ffmpeg -y -loop 1 -i "$IN_DIR/image_${i}.png" \
     -vf "$ZOOM_FILTER" \
     -t "$IMAGE_DURATION" \
-    -c:v libx264 -pix_fmt yuv420p \
+    -c:v libx264 -pix_fmt yuv420p -crf 18 -preset medium \
     "$OUT_DIR/clip_${i}.mp4"
 
   echo "Clip $i animated ✓"
@@ -48,7 +48,7 @@ echo "clips.txt तैयार ✓"
 
 # ── सभी clips को एक video में जोड़ो (बिना audio) ─────────────────────────────
 ffmpeg -y -f concat -safe 0 -i "$OUT_DIR/clips.txt" \
-  -c:v libx264 -pix_fmt yuv420p \
+  -c:v libx264 -pix_fmt yuv420p -crf 18 -preset medium \
   "$VIDEO_OUT"
 
 echo "Animated video (बिना audio) तैयार ✓"

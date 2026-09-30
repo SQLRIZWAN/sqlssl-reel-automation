@@ -36,28 +36,42 @@ async function fetchImage(url, opts = {}) {
 
 async function pollinations(moment, settings, i) {
   const prompt = encodeURIComponent(fullPrompt(moment, settings, i));
-  const qs = `width=${settings.images.width}&height=${settings.images.height}&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation&negative_prompt=${encodeURIComponent(NEGATIVE)}`;
+  const base = `width=${settings.images.width}&height=${settings.images.height}&nologo=true&seed=${1000 + i * 7}&referrer=github.com/SQLRIZWAN/sqlssl-reel-automation&negative_prompt=${encodeURIComponent(NEGATIVE)}`;
   const opts = {};
   if (process.env.POLLINATIONS_TOKEN) {
     opts.headers = { Authorization: `Bearer ${process.env.POLLINATIONS_TOKEN}` };
   }
-  try {
-    return await saveRaw(await fetchImage(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, opts), i);
-  } catch (e1) {
-    // kuch nodes sirf POST /prompt route support karte hain — fallback
-    info(`    image ${i} pollinations GET fail (${e1.message}) → POST try`);
-    const res = await fetch(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, {
-      ...opts,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
-      body: '{}',
-      signal: AbortSignal.timeout(150000),
-    });
-    if (!res.ok) throw new Error(`POST HTTP ${res.status} (GET: ${e1.message})`);
-    const buf = Buffer.from(await res.arrayBuffer());
-    if (buf.length < 8000 || buf[0] !== 0xff) throw new Error(`POST not an image (${buf.length}b, GET: ${e1.message})`);
-    return await saveRaw(buf, i);
+  // Model chain: flux (HD) → turbo → default — user ki pasand: ?model=flux
+  const models = [...(settings.images.pollinations_models || ['flux', 'turbo', ''])];
+  let lastErr = null;
+  for (const model of models) {
+    const qs = `${base}${model ? `&model=${encodeURIComponent(model)}` : ''}`;
+    try {
+      const raw = await saveRaw(await fetchImage(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, opts), i);
+      if (model) info(`    image ${i} pollinations model=${model} ✓`);
+      return raw;
+    } catch (e1) {
+      lastErr = e1;
+      info(`    image ${i} pollinations${model ? ` model=${model}` : ''} GET fail (${e1.message}) → ${model ? 'next model / POST' : 'POST'}`);
+      try {
+        const res = await fetch(`https://image.pollinations.ai/prompt/${prompt}?${qs}`, {
+          ...opts,
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+          body: '{}',
+          signal: AbortSignal.timeout(150000),
+        });
+        if (!res.ok) throw new Error(`POST HTTP ${res.status} (GET: ${e1.message})`);
+        const buf = Buffer.from(await res.arrayBuffer());
+        if (buf.length < 8000 || buf[0] !== 0xff) throw new Error(`POST not an image (${buf.length}b, GET: ${e1.message})`);
+        if (model) info(`    image ${i} pollinations model=${model} (POST) ✓`);
+        return await saveRaw(buf, i);
+      } catch (e2) {
+        lastErr = new Error(`${e1.message} / ${e2.message}`);
+      }
+    }
   }
+  throw lastErr || new Error('pollinations: sab model attempts fail');
 }
 
 async function openaiImg(moment, settings, i) {

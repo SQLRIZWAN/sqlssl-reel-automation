@@ -16,7 +16,7 @@ import { makeVoice } from './lib/tts.mjs';
 import { makeImages } from './lib/images.mjs';
 import { applyOverlays, kenBurns, mixAudio } from './lib/render.mjs';
 import { makeBgm } from './lib/bgm.mjs';
-import { publishMediaBranch, uploadToInstagram, repoSlug } from './lib/upload.mjs';
+import { publishMediaBranch, uploadToInstagram, uploadViaCookie, repoSlug } from './lib/upload.mjs';
 
 const argv = process.argv.slice(2);
 const DRY = argv.includes('--dry-run');
@@ -171,27 +171,47 @@ async function main() {
   }
 
   // ── STEP 7
-  t = step('STEP 7 — Upload (media branch → Instagram Graph API)');
+  t = step('STEP 7 — Upload (media branch → Instagram [cookie → Graph API])');
   const captionFull = `${script.caption}\n\n${script.hashtags.join(' ')}`;
   const media = publishMediaBranch(finalVideo, slot, dateStr);
   meta.media = media;
   let uploadResult = null;
+  let cookieErr = null;
 
-  if (!SKIP_UPLOAD && process.env.INSTAGRAM_ACCESS_TOKEN && media.url) {
+  // (A) Cookie upload — user ki pasand (web session, instagrapi)
+  if (!SKIP_UPLOAD && process.env.IG_COOKIES) {
+    try {
+      uploadResult = uploadViaCookie(finalVideo, captionFull);
+      meta.upload = { ok: true, ...uploadResult, video_url: media.url };
+      info(`  Instagram cookie upload complete ✓ (@${uploadResult.username}, reel code=${uploadResult.code})`);
+    } catch (e) {
+      cookieErr = e.message;
+      info(`  Cookie upload FAILED → Graph API fallback: ${e.message}`);
+    }
+  }
+
+  // (B) Graph API fallback (jaise pehle tha)
+  if (!uploadResult && !SKIP_UPLOAD && process.env.INSTAGRAM_ACCESS_TOKEN && media.url) {
     try {
       uploadResult = await uploadToInstagram(settings, {
         videoUrl: media.url,
         caption: captionFull,
         story: settings.upload.story_share,
       });
-      meta.upload = { ok: true, ...uploadResult, video_url: media.url };
-      info('  Instagram upload complete ✓');
+      meta.upload = { ok: true, via: 'graph', ...uploadResult, video_url: media.url };
+      info('  Instagram Graph upload complete ✓');
     } catch (e) {
-      meta.upload = { ok: false, error: e.message };
-      info(`  Instagram upload FAILED: ${e.message}`);
+      const both = cookieErr ? ` [cookie: ${cookieErr}]` : '';
+      meta.upload = { ok: false, error: e.message + both };
+      info(`  Instagram upload FAILED: ${e.message}${both}`);
       throw e;
     }
-  } else {
+  } else if (!uploadResult) {
+    if (cookieErr) {
+      meta.upload = { ok: false, error: `cookie fail + graph unavailable (${!process.env.INSTAGRAM_ACCESS_TOKEN ? 'no token' : 'no media URL'}): ${cookieErr}` };
+      info(`  Upload FAILED: ${meta.upload.error}`);
+      throw new Error(meta.upload.error);
+    }
     const why = SKIP_UPLOAD ? '--skip-upload' : !process.env.INSTAGRAM_ACCESS_TOKEN ? 'INSTAGRAM_ACCESS_TOKEN missing' : 'media URL nahi bani';
     meta.upload = { ok: false, skipped: why, video_url: media.url || null };
     info(`  Upload skipped: ${why}`);

@@ -25,7 +25,7 @@ ffmpeg -y \
   -map 0:v \
   -map "[aout]" \
   -c:v copy \
-  -c:a aac \
+  -c:a aac -b:a 192k \
   -t "$VOICE_DURATION" \
   "$OUT_VIDEO"
 

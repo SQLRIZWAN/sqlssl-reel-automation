@@ -108,7 +108,31 @@
       <h2>Instagram जोड़ो — बस एक बार</h2>
       <span class="status" id="igPill2">not connected</span>
     </div>
-    <p class="muted">Manus जैसा ही <b>website login + allow</b> वाला तरीका। Meta सिर्फ एक बार free App ID माँगता है (2 मिनट)।</p>
+    <p class="muted">2 तरीके — <b>A: 🍪 Cookie Login (Recommended, आसान)</b> या B: FB App (Graph API, जैसा पहले था)। Upload cookie se hoga; Graph API sirf backup.</p>
+
+    <div class="cookie-box">
+      <h4>🍪 तरीका A — Instagram Cookie Login <span class="badge">Recommended</span></h4>
+      <ol class="howsteps">
+        <li>PC/laptop में <b>instagram.com</b> खोलो और login करो (जिस account पर reel डालनी है)</li>
+        <li><b>F12</b> दबाओ → <b>Application</b> tab → बाईं तरफ <b>Cookies → https://www.instagram.com</b></li>
+        <li><b>sessionid</b>, <b>csrftoken</b>, <b>ds_user_id</b> — in teenों की value copy करके नीचे paste करो (बाकी optional)</li>
+        <li><b>🍪 Save & Sync</b> दबाओ — बस! Upload अब cookie से होगा (cookie रहेगी तो account password भी नहीं चाहिए)</li>
+      </ol>
+      <div class="grid2">
+        <label>sessionid *<input id="ckSessionid" type="password" placeholder="sessionid value"></label>
+        <label>csrftoken<input id="ckCsrf" type="password" placeholder="csrftoken value"></label>
+        <label>ds_user_id<input id="ckDsUserId" placeholder="numeric id (12345...)"></label>
+        <label>mid (optional)<input id="ckMid" placeholder="mid value"></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" id="ckSave">🍪 Save & Sync (cookie upload चालू)</button>
+        <button class="btn ghost" id="ckClear">Cookie हटाओ</button>
+      </div>
+      <div class="log" id="ckLog"></div>
+    </div>
+
+    <details class="manual">
+      <summary>तरीका B — Graph API (FB App) — backup वाला तरीका</summary>
     <ol class="howsteps">
       <li><a href="https://developers.facebook.com/apps/" target="_blank">developers.facebook.com/apps</a> पर जाओ → <b>Create App</b> → type: <b>Business</b> → App ID + App Secret कॉपी करो</li>
       <li>नीचे वो दोनों डालो → <b>🚀 Instagram Connect</b> दबाओ → Instagram/Facebook में login करके <b>Allow</b> कर दो</li>
@@ -132,6 +156,7 @@
       <button class="btn" id="igSaveManual">💾 सेव करो</button>
     </details>
     <div class="log" id="igLog"></div>
+    </details><!-- /तरीका B -->
   </div>
 
   <div class="card">

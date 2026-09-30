@@ -8,3 +8,5 @@ assets/fonts/
 .DS_Store
 .env
 *.key
+.piper-cache/
+scripts/__pycache__/
