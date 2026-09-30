@@ -26,7 +26,7 @@ async function geminiTTS(settings, text, outFile) {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           responseModalities: ['AUDIO'],
-          speechConfig: { prebuiltVoiceConfig: { voiceName: v.gemini_voice } },
+          speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: v.gemini_voice } } },
         },
       }),
     }

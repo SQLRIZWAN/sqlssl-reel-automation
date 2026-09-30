@@ -105,6 +105,7 @@ async function geminiImg(moment, settings, i) {
       fs.writeFileSync(raw, Buffer.from(b64, 'base64'));
       return raw;
     } catch (e) {
+      info(`    gemini image ${model}: ${e.message.slice(0, 140)}`);
       lastErr = e;
     }
   }
@@ -187,6 +188,10 @@ async function genOne(moment, settings, i) {
         info(`    image ${i} via ${name} try ${round + 1} failed: ${e.message}`);
         lastReqAt = Date.now();
         if (/missing/i.test(e.message)) runDead.add(name);
+        else if ((name === 'openai' || name === 'gemini') && /HTTP (403|404|429)|credits|billing|leaked/i.test(e.message)) {
+          runDead.add(name);
+          info(`    ${name} is run ke liye skip (permanent error) — fallback chain se chalega`);
+        }
         if (name === 'pollinations') {
           pollFail += 1;
           const maxFails = process.env.POLLINATIONS_TOKEN ? 8 : 3;
