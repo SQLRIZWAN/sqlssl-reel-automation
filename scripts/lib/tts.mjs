@@ -67,15 +67,14 @@ async function edgeTTS(settings, text, outFile) {
   const v = settings.voice;
   const mp3 = path.join(OUT, 'tts_edge.mp3');
   fs.rmSync(mp3, { force: true });
-  // Director's Notes ko bracket me add karo (edge inline emphasis support karta hai)
-  const speak = text + ` [pauses]`;
+  const speak = text;
   await run('python3', [
     '-m', 'edge_tts',
-    '--voice', v.edge_voice,
-    '--rate', v.edge_rate,
-    '--pitch', v.edge_pitch,
-    '--text', speak,
-    '--write-media', mp3,
+    `--voice=${v.edge_voice}`,
+    `--rate=${v.edge_rate}`,
+    `--pitch=${v.edge_pitch}`,
+    `--text=${speak}`,
+    `--write-media=${mp3}`,
   ]);
   if (!fs.existsSync(mp3) || fs.statSync(mp3).size < 1000) throw new Error('edge-tts: empty output');
   run('ffmpeg', ['-y', '-i', mp3, '-ar', '44100', '-ac', '1', outFile]);

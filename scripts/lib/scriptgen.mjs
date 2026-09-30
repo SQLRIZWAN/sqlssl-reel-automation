@@ -89,7 +89,7 @@ function buildFallback(news, settings) {
   const lines = [
     `आज ${news.date} की ताज़ा खबर — ${head.slice(0, 90)}।`,
     `${news.calendar.focus} — यह खबर सीधे आम लोगों से जुड़ी है।`,
-    `जानकारी के मुताबिक ${summary.slice(0, 110) || 'साइबर अपराधियों ने नया तरीका अपनाया'}`,
+    `जानकारी के मुताबिक ${summary.slice(0, 85) || 'साइबर अपराधियों ने नया तरीका अपनाया'}`,
     `हमले में सबसे ज़्यादा नुकसान उन्हीं का हुआ जो चेतावनी को नज़रअंदाज़ करते रहे।`,
     danger
       ? `सबसे बड़ा खतरा — आपका डेटा या पैसा भी इसी तरीके से निशाने पर हो सकता है।`
@@ -108,21 +108,10 @@ function buildFallback(news, settings) {
     guard += 1;
   }
   guard = 0;
-  while (countWords(lines.join(' ')) > settings.script.max_words && guard < 200) {
+  // poore sentences hatao (grammar intact rahe) — first 2 lines aur last CTA safe
+  while (countWords(lines.join(' ')) > settings.script.max_words && lines.length > 7 && guard < 12) {
     guard += 1;
-    let idx = 1;
-    let best = 0;
-    for (let i = 1; i < lines.length - 1; i++) {
-      const wl = lines[i].split(' ').length;
-      if (wl > best) { best = wl; idx = i; }
-    }
-    if (best <= 6) {
-      if (lines.length <= 9) break;
-      lines.splice(idx, 1);
-      continue;
-    }
-    const ws = lines[idx].split(' ');
-    lines[idx] = ws.slice(0, ws.length - 2).join(' ').replace(/[,—-]\s*$/, '') + '।';
+    lines.splice(Math.floor(lines.length / 2), 1);
   }
   const script = lines.join(' ');
 
