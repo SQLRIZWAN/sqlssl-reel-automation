@@ -9,7 +9,7 @@ const RAW_BASE = () => {
 const defaults = {
   repo: REPO_DEFAULT,
   ghToken: '',
-  ig: { appId: '', appSecret: '', redirect: '', scope: 'instagram_basic,instagram_manage_reels,pages_show_list,pages_read_engagement,business_management', token: '', userId: '', username: '' },
+  ig: { appId: '', appSecret: '', redirect: '', scope: 'instagram_basic,instagram_content_publish,pages_show_list,pages_read_engagement,business_management', token: '', userId: '', username: '' },
   oa: { key: '' },
   gm: { key: '' },
   pol: { token: '' },
