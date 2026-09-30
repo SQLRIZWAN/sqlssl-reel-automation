@@ -91,11 +91,38 @@ function refreshDashboard() {
   igP.textContent = cfg.ig.token ? '✅ connected' : 'not connected';
   igP.className = 'status' + (cfg.ig.token ? ' ok' : '');
   const oaP = document.getElementById('oaPill');
-  oaP.textContent = cfg.oa.key ? '✅ key saved' : 'not connected';
-  oaP.className = 'status' + (cfg.oa.key ? ' ok' : '');
+  if (oaP) {
+    oaP.textContent = cfg.oa.key ? '✅ key saved' : 'not connected';
+    oaP.className = 'status' + (cfg.oa.key ? ' ok' : '');
+  }
   const gmP = document.getElementById('gmPill');
-  gmP.textContent = cfg.gm.key ? '✅ key saved' : 'not connected';
+  gmP.textContent = cfg.gm.key ? '✅ फ्री key सेव है' : 'not connected';
   gmP.className = 'status' + (cfg.gm.key ? ' ok' : '');
+  const igP2 = document.getElementById('igPill2');
+  if (igP2) {
+    igP2.textContent = cfg.ig.token ? '✅ जुड़ गया' : '⚠️ जोड़ना बाकी';
+    igP2.className = 'status' + (cfg.ig.token ? ' ok' : '');
+  }
+  const gmH = document.getElementById('gmSavedHint');
+  if (gmH) gmH.textContent = cfg.gm.key ? '✓ सेव है' : '';
+  const oaH = document.getElementById('oaSavedHint');
+  if (oaH) oaH.textContent = cfg.oa.key ? '✓ सेव है' : '';
+}
+
+function updateHero(pending) {
+  const t = document.getElementById('heroTitle');
+  const s = document.getElementById('heroSub');
+  const h = document.getElementById('hero');
+  if (!t) return;
+  if (pending > 0) {
+    h.className = 'hero pending';
+    t.textContent = `⚠️ सेटअप बाकी है — ${pending} काम (${cfg.ig.token ? 'नीचे checklist देखो' : 'पहले Instagram जोड़ो'})`;
+    s.textContent = 'एक बार पूरा हो जाए तो रोज़ 2 रील अपने आप बनकर Instagram पर चली जाएँगी — ये page खोलने की भी ज़रूरत नहीं।';
+  } else {
+    h.className = 'hero ok';
+    t.textContent = '✅ सब कुछ तैयार है — 0-click automation चालू';
+    s.textContent = 'रोज़ 2 रील अपने आप बनेंगी और Instagram पर upload होंगी। इस page को अब खोलने की ज़रूरत नहीं।';
+  }
 }
 
 async function loadRuns() {
@@ -123,13 +150,19 @@ document.getElementById('refreshRuns').addEventListener('click', loadRuns);
 
 async function loadLatestVideo() {
   const el = document.getElementById('latestVideo');
+  const vid = document.getElementById('latestVideoEl');
   try {
     const c = await ghApi(`/repos/${cfg.repo}/commits/media`);
     const fname = (c.files || []).map((f) => f.filename).find((n) => n.endsWith('.mp4')) || 'latest.mp4';
     const url = `https://raw.githubusercontent.com/${cfg.repo}/media/${fname}`;
-    el.innerHTML = `<a href="${url}" target="_blank">▶️ ${esc(fname)}</a> — ${new Date(c.commit.author.date).toLocaleString('hi-IN')} <span class="muted">(download/upload दोनों के लिए यही URL इस्तेमाल होता है)</span>`;
+    el.innerHTML = `<a href="${url}" target="_blank">⬇️ ${esc(fname)} डाउनलोड</a> — ${new Date(c.commit.author.date).toLocaleString('hi-IN')}`;
+    if (vid) {
+      vid.src = url;
+      vid.classList.add('on');
+    }
   } catch (e) {
-    el.textContent = 'अभी कोई video नहीं: ' + e.message;
+    el.textContent = 'अभी कोई video नहीं बनी — पहली run के बाद यहाँ दिखेगी।';
+    if (vid) { vid.removeAttribute('src'); vid.classList.remove('on'); }
   }
 }
 
@@ -151,6 +184,7 @@ function renderChecklist() {
       <span class="mark">${i.ok ? '✅' : (i.warn ? '⚠️' : '⬜')}</span>
       <b>${i.t}</b> — ${i.d}
     </div>`).join('');
+  updateHero(items.filter((i) => !i.ok).length);
 }
 
 document.getElementById('checkRefresh').addEventListener('click', () => { renderChecklist(); loadRuns(); loadLatestVideo(); });
@@ -586,7 +620,10 @@ document.getElementById('clearAll').addEventListener('click', () => {
   fillIgFields();
   refreshDashboard();
   renderChecklist();
-  activateTab(cfg.activeTab || 'dash');
+  // purane tab names (apis/schedule/prompt) → adv
+  const legacy = { apis: 'adv', schedule: 'adv', prompt: 'adv' };
+  const startTab = legacy[cfg.activeTab] || cfg.activeTab || 'dash';
+  activateTab(startTab);
   await handleIgCallback();
   refreshDashboard();
   if (cfg.promptText) document.getElementById('promptText').value = cfg.promptText;
