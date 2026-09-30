@@ -210,18 +210,23 @@ export async function makeVoiceScenes(settings, moments) {
         await engines[name](settings, line, tmp);
         const d = ffprobeDuration(tmp);
         if (d < 0.4) throw new Error(`too short ${d}s`);
-        if (i < moments.length - 1 && gap > 0) {
-          run('ffmpeg', ['-y', '-i', tmp, '-af', `apad=pad_dur=${gap}`, '-ar', '44100', '-ac', '1', withGap]);
-          fs.rmSync(tmp, { force: true });
-        } else {
-          fs.renameSync(tmp, withGap);
-        }
+        // head/tail dead-air hatao (edge ~1.4s trailing deta hai) + chhota natural margin + gap
+        const tail = (i < moments.length - 1 ? gap : 0) + 0.08;
+        const af =
+          'silenceremove=start_periods=1:start_threshold=-48dB,' +
+          'areverse,' +
+          'silenceremove=start_periods=1:start_threshold=-48dB,' +
+          'areverse,' +
+          'adelay=70:all=1,' +
+          `apad=pad_dur=${tail.toFixed(3)}`;
+        run('ffmpeg', ['-y', '-i', tmp, '-af', af, '-ar', '44100', '-ac', '1', withGap]);
+        fs.rmSync(tmp, { force: true });
         const dg = ffprobeDuration(withGap);
         sceneDurations.push(Number(dg.toFixed(4)));
         chunks.push(withGap);
         chosen = name;
         ok = true;
-        if (i === 0 || i === moments.length - 1) info(`  scene ${i + 1}/${moments.length} voice=${name} (${d.toFixed(2)}s + ${gap}s gap)`);
+        info(`  scene ${i + 1}/${moments.length} voice=${name} speech=${d.toFixed(2)}s → scene=${dg.toFixed(2)}s`);
         break;
       } catch (e) {
         errors.push(`${name}#${i + 1}: ${e.message}`);
@@ -232,7 +237,6 @@ export async function makeVoiceScenes(settings, moments) {
       }
     }
     if (!ok) throw new Error(`scene ${i + 1} ki voice fail: ${errors.slice(-3).join(' | ')}`);
-    if (i > 0 && (i + 1) % 6 === 0) info(`  voice scenes: ${i + 1}/${moments.length} ✓`);
   }
 
   // sab scenes ko ek narration.wav me jodo
