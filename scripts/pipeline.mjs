@@ -12,7 +12,7 @@ import {
 } from './lib/util.mjs';
 import { researchNews } from './lib/news.mjs';
 import { generateScript, validateScript } from './lib/scriptgen.mjs';
-import { makeVoice } from './lib/tts.mjs';
+import { makeVoice, makeVoiceScenes } from './lib/tts.mjs';
 import { makeImages } from './lib/images.mjs';
 import { applyOverlays, kenBurns, mixAudio } from './lib/render.mjs';
 import { makeBgm } from './lib/bgm.mjs';
@@ -117,15 +117,19 @@ async function main() {
     return;
   }
 
-  // ── STEP 2
-  t = step('STEP 2 — Voice over (Gemini TTS Rasalgethi → fallback) + duration');
-  const voice = await makeVoice(settings, script.script);
+  // ── STEP 2 (per-scene voice — 100% voice-image sync)
+  t = step('STEP 2 — Voice over per scene (exact sync) + duration');
+  const allLines = script.moments.every((m) => m.voiceLine && m.voiceLine.trim().length >= 5);
+  const voice = allLines
+    ? await makeVoiceScenes(settings, script.moments)
+    : await makeVoice(settings, script.script);
   ctx.voice = voice;
-  meta.voice = { duration: voice.duration, engine: voice.engine };
+  meta.voice = { duration: voice.duration, engine: voice.engine, scenes: voice.sceneDurations ? voice.sceneDurations.length : null };
   const VOICE_DURATION = voice.duration;
+  const sceneDurs = voice.sceneDurations || null;
   const IMAGE_DURATION = parseFloat((VOICE_DURATION / script.moments.length).toFixed(4));
-  info(`  VOICE_DURATION=${VOICE_DURATION}s | IMAGE_DURATION=${IMAGE_DURATION}s | images=${script.moments.length}`);
-  done(t, `| ${VOICE_DURATION.toFixed(2)}s via ${voice.engine}`);
+  info(`  VOICE_DURATION=${VOICE_DURATION}s | ${sceneDurs ? `scenes=${sceneDurs.length} (per-scene exact)` : `IMAGE_DURATION=${IMAGE_DURATION}s`} | images=${script.moments.length}`);
+  done(t, `| ${VOICE_DURATION.toFixed(2)}s via ${voice.engine}${sceneDurs ? ' | per-scene sync' : ''}`);
 
   // ── STEP 3
   t = step('STEP 3 — 18-25 images (voice-image sync) + CENTER Hindi overlay');
@@ -137,7 +141,7 @@ async function main() {
 
   // ── STEP 3B
   t = step('STEP 3B — Ken Burns animation → video_no_audio.mp4');
-  kenBurns(settings, IMAGE_DURATION);
+  kenBurns(settings, sceneDurs || IMAGE_DURATION);
   ctx.videoNoAudio = true;
   done(t);
 

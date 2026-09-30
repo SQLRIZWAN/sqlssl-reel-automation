@@ -4,17 +4,27 @@
 set -euo pipefail
 
 NUM_IMAGES=${NUM_IMAGES:?NUM_IMAGES required}
-IMAGE_DURATION=${IMAGE_DURATION:?IMAGE_DURATION required}
+# Per-scene sync: SCENE_DURATIONS file (har line = ek scene duration) ya phir sab ke liye IMAGE_DURATION
+SCENE_DURATIONS=${SCENE_DURATIONS:-}
+IMAGE_DURATION=${IMAGE_DURATION:-}
+if [ -z "$SCENE_DURATIONS" ] && [ -z "$IMAGE_DURATION" ]; then
+  echo "SCENE_DURATIONS ya IMAGE_DURATION required" >&2; exit 1
+fi
 IN_DIR=${IN_DIR:?IN_DIR required}
 OUT_DIR=${OUT_DIR:-$IN_DIR}
 VIDEO_OUT=${VIDEO_OUT:?VIDEO_OUT required}
 FPS=${FPS:-30}
 
-# FPS और frames calculate करो
-FRAMES=$(awk -v d="$IMAGE_DURATION" -v f="$FPS" 'BEGIN{printf "%d", d*f}')
-
 # हर इमेज पर Ken Burns apply करो — animated clip बनाओ
 for i in $(seq 1 "$NUM_IMAGES"); do
+
+  # Har scene ki apni duration (voice-line ke exactly barabar) + frames
+  if [ -n "$SCENE_DURATIONS" ]; then
+    DUR=$(sed -n "${i}p" "$SCENE_DURATIONS")
+  else
+    DUR=$IMAGE_DURATION
+  fi
+  FRAMES=$(awk -v d="$DUR" -v f="$FPS" 'BEGIN{printf "%d", d*f+0.5}')
 
   # Alternate: zoom-in और zoom-out + slight pan — variety के लिए
   if [ $(( i % 3 )) -eq 0 ]; then
@@ -30,7 +40,7 @@ for i in $(seq 1 "$NUM_IMAGES"); do
 
   ffmpeg -y -loop 1 -i "$IN_DIR/image_${i}.png" \
     -vf "$ZOOM_FILTER" \
-    -t "$IMAGE_DURATION" \
+    -t "$DUR" \
     -c:v libx264 -pix_fmt yuv420p -crf 18 -preset medium \
     "$OUT_DIR/clip_${i}.mp4"
 

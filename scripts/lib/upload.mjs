@@ -34,6 +34,9 @@ export function publishMediaBranch(videoPath, slot, dateStr) {
     run('git', ['config', 'user.name', 'sqlssl-reel-bot'], { cwd: tmp });
     fs.copyFileSync(videoPath, path.join(tmp, fileName));
     fs.copyFileSync(videoPath, path.join(tmp, latestName));
+    // DP cache: agli run seedha yahin se utha legi (cookie/graph se aayi ho to)
+    const dpSrc = path.join(path.dirname(videoPath), 'dp.png');
+    if (fs.existsSync(dpSrc) && fs.statSync(dpSrc).size > 2000) fs.copyFileSync(dpSrc, path.join(tmp, 'dp.png'));
     fs.writeFileSync(path.join(tmp, 'meta.json'), JSON.stringify({ date: dateStr, slot, file: fileName, generated_at: new Date().toISOString() }, null, 2));
     run('git', ['add', '-A'], { cwd: tmp });
     run('git', ['commit', '-qm', `reel ${dateStr} ${slot}`], { cwd: tmp });

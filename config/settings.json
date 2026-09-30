@@ -2,9 +2,10 @@
   "version": 1,
   "brand": {
     "handle": "@sql.ssl",
-    "name": "SQL.SSL",
-    "brand_hashtag": "#sqlssl",
-    "owner": "SQLRIZWAN"
+    "dp_size": 150,
+    "handle_size": 56,
+    "dp_margin": 44,
+    "dp_bottom": 78
   },
   "schedule": {
     "morning_ist": "04:00",
@@ -57,7 +58,8 @@
     "edge_pitch": "+0Hz",
     "directors_notes": "Speak in a deep, heavy, serious and commanding male voice — slow and deliberate pacing, with weight and gravity in every word, like a confident expert delivering an urgent warning. Add natural pauses for emphasis on important words. Tone should sound grave and cautionary, not cheerful or upbeat — like a trusted insider revealing something serious in a calm but intense way.",
     "volume": 2.2,
-    "piper_length_scale": 1.1
+    "piper_length_scale": 1.1,
+    "scene_gap_seconds": 0.3
   },
   "images": {
     "provider_priority": [
@@ -86,7 +88,9 @@
     "wrap_chars": 16,
     "max_lines": 3,
     "border_width": 8,
-    "y_center_ratio": 0.47
+    "y_center_ratio": 0.47,
+    "box_color": "62,207,214",
+    "box_border": 5
   },
   "bgm": {
     "provider_priority": [

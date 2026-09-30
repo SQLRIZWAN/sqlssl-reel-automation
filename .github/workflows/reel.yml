@@ -43,8 +43,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg bc fonts-noto-core fonts-noto-extra
-          pip3 install --quiet --disable-pip-version-check --break-system-packages edge-tts instagrapi \
-            || pip3 install --quiet --disable-pip-version-check edge-tts instagrapi
+          pip3 install --quiet --disable-pip-version-check --break-system-packages edge-tts instagrapi pillow \
+            || pip3 install --quiet --disable-pip-version-check edge-tts instagrapi pillow
 
       - name: Run reel pipeline
         env:

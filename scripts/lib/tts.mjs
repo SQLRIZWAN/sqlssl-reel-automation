@@ -181,3 +181,67 @@ export async function makeVoice(settings, scriptText) {
   }
   throw new Error('Sab TTS engines fail hue: ' + errors.join(' | '));
 }
+
+// ── 100% voice-image sync: HAR scene line ki alag TTS + exact duration ──
+// Returns { file, duration, engine, sceneDurations[] } — sceneDurations me
+// har scene ki voice + gap hai (video ki scene length bilkul isi ke barabar hogi)
+export async function makeVoiceScenes(settings, moments) {
+  ensureDir(OUT);
+  const outFile = path.join(OUT, 'narration.wav');
+  fs.rmSync(outFile, { force: true });
+  const engines = { gemini: geminiTTS, gtrans: gtransTTS, openai: openaiTTS, edge: edgeTTS, piper: piperTTS };
+  const gap = Number(settings.voice.scene_gap_seconds ?? 0.3);
+  const errors = [];
+  let chosen = null;
+  const sceneDurations = [];
+  const chunks = [];
+
+  for (let i = 0; i < moments.length; i++) {
+    const line = (moments[i].voiceLine || '').trim();
+    if (!line) throw new Error(`scene ${i + 1}: voiceLine khali hai`);
+    const chain = chosen ? [chosen, ...settings.voice.priority.filter((n) => n !== chosen)] : settings.voice.priority;
+    let ok = false;
+    for (const name of chain) {
+      const tmp = path.join(OUT, `scene_${i + 1}.wav`);
+      const withGap = path.join(OUT, `scene_${i + 1}_g.wav`);
+      fs.rmSync(tmp, { force: true });
+      fs.rmSync(withGap, { force: true });
+      try {
+        await engines[name](settings, line, tmp);
+        const d = ffprobeDuration(tmp);
+        if (d < 0.4) throw new Error(`too short ${d}s`);
+        if (i < moments.length - 1 && gap > 0) {
+          run('ffmpeg', ['-y', '-i', tmp, '-af', `apad=pad_dur=${gap}`, '-ar', '44100', '-ac', '1', withGap]);
+          fs.rmSync(tmp, { force: true });
+        } else {
+          fs.renameSync(tmp, withGap);
+        }
+        const dg = ffprobeDuration(withGap);
+        sceneDurations.push(Number(dg.toFixed(4)));
+        chunks.push(withGap);
+        chosen = name;
+        ok = true;
+        if (i === 0 || i === moments.length - 1) info(`  scene ${i + 1}/${moments.length} voice=${name} (${d.toFixed(2)}s + ${gap}s gap)`);
+        break;
+      } catch (e) {
+        errors.push(`${name}#${i + 1}: ${e.message}`);
+        if (chosen === name) chosen = null;
+        fs.rmSync(tmp, { force: true });
+        fs.rmSync(withGap, { force: true });
+        await sleep(800);
+      }
+    }
+    if (!ok) throw new Error(`scene ${i + 1} ki voice fail: ${errors.slice(-3).join(' | ')}`);
+    if (i > 0 && (i + 1) % 6 === 0) info(`  voice scenes: ${i + 1}/${moments.length} ✓`);
+  }
+
+  // sab scenes ko ek narration.wav me jodo
+  const list = path.join(OUT, 'scenes_concat.txt');
+  fs.writeFileSync(list, chunks.map((f) => `file '${f}'`).join('\n') + '\n');
+  run('ffmpeg', ['-y', '-f', 'concat', '-safe', '0', '-i', list, '-c:a', 'pcm_s16le', '-ar', '44100', '-ac', '1', outFile]);
+  const total = ffprobeDuration(outFile);
+  if (total < 8) throw new Error(`total voice too short: ${total}s`);
+  const sum = sceneDurations.reduce((a, b) => a + b, 0);
+  info(`  voice ready: ${moments.length} scenes | engine=${chosen} | ${total.toFixed(2)}s (scene-sum ${sum.toFixed(2)}s)`);
+  return { file: outFile, duration: total, engine: chosen, sceneDurations };
+}
