@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL.SSL Reel Bot — Control Panel</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💉</text></svg>">
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo">SQL</div>
+    <div>
+      <h1>SQL.SSL Reel Automation</h1>
+      <p>Free Automated Instagram Reel System · GitHub Actions + Pages · <span class="acc">@sql.ssl</span></p>
+    </div>
+  </div>
+  <div class="head-right">
+    <span class="pill" id="saveState">💾 localStorage active</span>
+    <a class="pill ghost" href="https://github.com/SQLRIZWAN/sqlssl-reel-automation" target="_blank">📂 GitHub Repo</a>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="dash">🏠 डैशबोर्ड</button>
+  <button class="tab" data-tab="connect">🔌 कनेक्शन</button>
+  <button class="tab" data-tab="apis">🧩 फ्री API</button>
+  <button class="tab" data-tab="schedule">⏰ शेड्यूल</button>
+  <button class="tab" data-tab="prompt">📜 प्रॉम्प्ट फाइल</button>
+  <button class="tab" data-tab="sync">🔄 GitHub सिंक</button>
+</nav>
+
+<main>
+
+<!-- ═══════════ डैशबोर्ड ═══════════ -->
+<section class="panel active" id="panel-dash">
+  <div class="cards" id="dashCards">
+    <div class="card stat"><label>अगली सुबह वाली रील</label><b id="nextMorning">—</b><small>04:00 IST (22:30 UTC)</small></div>
+    <div class="card stat"><label>अगली शाम वाली रील</label><b id="nextEvening">—</b><small>16:00 IST (10:30 UTC)</small></div>
+    <div class="card stat"><label>Instagram</label><b id="igStatus">❌ नहीं जुड़ा</b><small>Graph API upload</small></div>
+    <div class="card stat"><label>LLM / Voice</label><b id="llmStatus">—</b><small>script + TTS engine</small></div>
+  </div>
+
+  <div class="card">
+    <h2>📊 GitHub Actions — पिछली रन्स</h2>
+    <p class="muted" id="runsHint">देखने के लिए GitHub Token जोड़ें (Sync टैब → टोकन डालें)।</p>
+    <div id="runsList" class="runs"></div>
+    <button class="btn" id="refreshRuns">🔄 रिफ्रेश करो</button>
+  </div>
+
+  <div class="card">
+    <h2>🎯 सिस्टम कैसे काम करता है</h2>
+    <ol class="flow">
+      <li><b>STEP 0</b> — 30-दिन calendar के हिसाब से आज की LIVE न्यूज़ (Google News RSS, फ्री)</li>
+      <li><b>STEP 1</b> — 90-120 शब्द हिंदी script + 18-25 moments + caption + 10 hashtags</li>
+      <li><b>STEP 2</b> — Voice: Gemini TTS (Rasalgethi) → OpenAI → Edge TTS fallback, duration नापी जाती है</li>
+      <li><b>STEP 3</b> — 18-25 images (Pollinations फ्री) + हर image पर center Hindi overlay</li>
+      <li><b>STEP 3B</b> — Ken Burns zoom/pan → video_no_audio.mp4</li>
+      <li><b>STEP 4-5</b> — Caption + 3-tier hashtags + dark cyberpunk BGM (80-100 BPM)</li>
+      <li><b>STEP 6</b> — Mix: Voice 2.2 / BGM 0.30 → final = voice duration → <b>11-point verify</b></li>
+      <li><b>STEP 7</b> — media branch (public URL) → Instagram Graph API publish ✓</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════ कनेक्शन ═══════════ -->
+<section class="panel" id="panel-connect">
+  <div class="card warn">
+    <h2>⚠️ सुरक्षा नोट</h2>
+    <p class="muted">सारे keys/tokens <b>सिर्फ आपके browser के localStorage</b> में रहते हैं — किसी सर्वर पर नहीं। जब GitHub सिंक करते हो तभी वो repo के <b>Encrypted Secrets</b> में जाते हैं। किसी को भी अपना PAT / token मत दो।</p>
+  </div>
+
+  <!-- Instagram -->
+  <div class="card">
+    <div class="conn-head">
+      <h2>📸 Instagram — Redirect Connect</h2>
+      <span class="status" id="igPill">not connected</span>
+    </div>
+    <p class="muted">Meta का OAuth redirect flow — "Continue with Facebook" se connect karo. Professional (Creator/Business) account + linked Facebook Page chahiye.</p>
+    <div class="grid2">
+      <label>Facebook App ID<input id="fbAppId" placeholder="123456789012345"></label>
+      <label>Facebook App Secret<input id="fbAppSecret" type="password" placeholder="••••••••"></label>
+      <label>Redirect URI<input id="fbRedirect" placeholder="(auto — current page URL)"></label>
+      <label>Scope<input id="fbScope" value="instagram_basic,instagram_manage_reels,pages_show_list,pages_read_engagement,business_management"></label>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" id="igConnect">🚀 Instagram Connect (Redirect)</button>
+      <button class="btn" id="igTest">✅ टोकन टेस्ट करो</button>
+      <button class="btn" id="igDisconnect">❌ डिसकनेक्ट</button>
+    </div>
+    <details class="manual">
+      <summary>या manual तरीका (token paste करो)</summary>
+      <label>Instagram Access Token<input id="igTokenManual" type="password" placeholder="IGQVJ..."></label>
+      <label>Instagram User ID (optional)<input id="igUserManual" placeholder="17841400..."></label>
+      <button class="btn" id="igSaveManual">💾 localStorage में सेव करो</button>
+      <p class="muted">Token banao: <a href="https://developers.facebook.com/tools/explorer/" target="_blank">Graph API Explorer</a> → app select → <code>instagram_basic, instagram_manage_reels, pages_show_list</code> → Generate.</p>
+    </details>
+    <div class="log" id="igLog"></div>
+  </div>
+
+  <!-- OpenAI -->
+  <div class="card">
+    <div class="conn-head">
+      <h2>🤖 OpenAI — Redirect Connect</h2>
+      <span class="status" id="oaPill">not connected</span>
+    </div>
+    <p class="muted">Redirect se OpenAI API Keys page khulega → key banao → wapas aake paste karo. Script (gpt-4o-mini), Voice (TTS) aur Images (gpt-image-1) ke liye. (OpenAI paid API hai — optional hai, bina key ke bhi free engines chalte hain.)</p>
+    <div class="btn-row">
+      <button class="btn primary" id="oaConnect">🔗 OpenAI Redirect Connect</button>
+      <button class="btn" id="oaTest">✅ key टेस्ट करो</button>
+      <button class="btn" id="oaDisconnect">❌ डिसकनेक्ट</button>
+    </div>
+    <label>OpenAI API Key<input id="oaKey" type="password" placeholder="sk-proj-..."></label>
+    <div class="log" id="oaLog"></div>
+  </div>
+
+  <!-- Gemini -->
+  <div class="card">
+    <div class="conn-head">
+      <h2>✨ Google Gemini — फ्री Tier (Recommended)</h2>
+      <span class="status" id="gmPill">not connected</span>
+    </div>
+    <p class="muted">Prompt file की fixed voice — <b>Gemini TTS + Rasalgethi</b> — और script generation, दोनों फ्री tier में चलते हैं। AI Studio से free key बनाओ।</p>
+    <div class="btn-row">
+      <button class="btn primary" id="gmRedirect">🔗 AI Studio खोलो (Redirect)</button>
+      <button class="btn" id="gmTest">✅ key टेस्ट करो</button>
+      <button class="btn" id="gmDisconnect">❌ डिसकनेक्ट</button>
+    </div>
+    <label>Gemini API Key<input id="gmKey" type="password" placeholder="AIza..."></label>
+    <div class="log" id="gmLog"></div>
+  </div>
+</section>
+
+<!-- ═══════════ फ्री API ═══════════ -->
+<section class="panel" id="panel-apis">
+  <div class="card">
+    <h2>🧩 सारे Free APIs — नाम, काम और कितने ज़रूरी</h2>
+    <p class="muted">⭐⭐⭐⭐⭐ = system की जान। जो API key माँगती हैं उनका फ़ील्ड भरो → localStorage में सेव होगा → "सिंक" से GitHub Secrets बन जाएँगे।</p>
+    <div class="api-table" id="apiTable">लोड हो रहा है...</div>
+  </div>
+</section>
+
+<!-- ═══════════ शेड्यूल ═══════════ -->
+<section class="panel" id="panel-schedule">
+  <div class="card">
+    <h2>⏰ Daily 2 Reels — समय (IST)</h2>
+    <p class="muted">GitHub Actions cron सिर्फ UTC लेता है (IST = UTC+5:30) — नीचे दोनों automatically calculate हो रहे हैं। Save → GitHub सिंक से workflow में लग जाएगा।</p>
+    <div class="grid2">
+      <label>🌅 सुबह वाली रील (IST)<input id="slotMorning" type="time" value="04:00"></label>
+      <label>🌇 शाम वाली रील (IST)<input id="slotEvening" type="time" value="16:00"></label>
+    </div>
+    <div class="cron-box">
+      <div>क्रॉन (UTC): <code id="cronMorning">30 22 * * *</code> <span class="muted" id="cronMorningNote">= 04:00 IST</span></div>
+      <div>क्रॉन (UTC): <code id="cronEvening">30 10 * * *</code> <span class="muted" id="cronEveningNote">= 16:00 IST</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" id="saveSchedule">💾 शेड्यूल सेव करो</button>
+      <button class="btn" id="applyBestTime">✨ Prompt-file best time लगाओ (19:30 + 07:30)</button>
+    </div>
+    <p class="muted">📌 Prompt file कहती है best reach <b>7:30-8:30 PM IST</b> पर मिलती है। आपने माँगा है 4 AM + 4 PM — default वही है; एक क्लिक में best time भी लगा सकते हो।</p>
+  </div>
+
+  <div class="card">
+    <h2>🔁 Run mode</h2>
+    <p class="muted">Manual run (Actions → Run workflow) में ये options मिलेंगे: <code>auto</code>, <code>morning</code>, <code>evening</code> slot और mode: <code>full</code> / <code>dry-run</code> / <code>skip-upload</code>।</p>
+  </div>
+</section>
+
+<!-- ═══════════ प्रॉम्प्ट ═══════════ -->
+<section class="panel" id="panel-prompt">
+  <div class="card">
+    <h2>📜 SQL.SSL.2027.TXT — Master Prompt File</h2>
+    <p class="muted">Yahi file pipeline ke rules enforce karti hai (90-120 शब्द, 18-25 scenes, overlay, Ken Burns, 11-point verify, 3-tier hashtags)। Repository se load hoti hai, नीचे edit कर localStorage में सेव कर सकते हो।</p>
+    <div class="btn-row">
+      <button class="btn primary" id="loadPrompt">🔄 Repo से लोड करो</button>
+      <button class="btn" id="savePrompt">💾 localStorage में सेव</button>
+      <button class="btn" id="dlPrompt">⬇️ डाउनलोड</button>
+    </div>
+    <textarea id="promptText" class="code" spellcheck="false" rows="24"></textarea>
+  </div>
+</section>
+
+<!-- ═══════════ सिंक ═══════════ -->
+<section class="panel" id="panel-sync">
+  <div class="card">
+    <h2>🔄 GitHub Sync — Settings → Repo</h2>
+    <p class="muted">सारा काम GitHub पर: ये buttons settings.json, Secrets और workflow cron को repo में लिख देते हैं। PAT में <b>repo</b> + <b>workflow</b> scope होना चाहिए (classic) या fine-grant में <b>Contents + Actions + Secrets</b> write।</p>
+    <label>GitHub Personal Access Token<input id="ghToken" type="password" placeholder="ghp_... या github_pat_..."></label>
+    <label>Repository<input id="ghRepo" value="SQLRIZWAN/sqlssl-reel-automation"></label>
+    <div class="btn-row">
+      <button class="btn primary" id="syncAll">🚀 सब सिंक करो (settings + cron + secrets)</button>
+      <button class="btn" id="syncSettings">📄 सिर्फ settings.json</button>
+      <button class="btn" id="syncCron">⏰ सिर्फ workflow cron</button>
+      <button class="btn" id="syncSecrets">🔐 सिर्फ secrets</button>
+      <button class="btn" id="enablePages">🌐 GitHub Pages चालू करो</button>
+      <button class="btn" id="clearAll">🗑️ सब clear (localStorage)</button>
+    </div>
+    <div class="log big" id="syncLog">Ready.</div>
+  </div>
+
+  <div class="card">
+    <h2>🧪 Quick Actions</h2>
+    <div class="btn-row">
+      <a class="btn" target="_blank" href="https://github.com/SQLRIZWAN/sqlssl-reel-automation/actions/workflows/reel.yml">▶️ Workflow चलाओ (manual)</a>
+      <a class="btn" target="_blank" href="https://github.com/SQLRIZWAN/sqlssl-reel-automation/actions">📊 Actions history</a>
+      <a class="btn" target="_blank" href="https://github.com/SQLRIZWAN/sqlssl-reel-automation/tree/media">🎬 Media branch (videos)</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>SQL.SSL · @sql.ssl · Free stack: GitHub Actions + Pages + Google News RSS + Pollinations + Edge TTS + FFmpeg</p>
+  <p class="muted">⚠️ Token चैट/किसी के साथ share मत करो — जो PAT इस्तेमाल हुआ उसे setup के बाद revoke कर देना।</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/libsodium-wrappers@0.7.15"></script>
+<script src="app.js"></script>
+</body>
+</html>

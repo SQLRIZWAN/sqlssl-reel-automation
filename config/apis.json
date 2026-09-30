@@ -1,0 +1,173 @@
+{
+  "note": "Sare free APIs ka catalog — website isi se load karti hai. importance = 1 se 5 (5 = system ke liye jaan se zyada zaroori).",
+  "apis": [
+    {
+      "id": "github-actions",
+      "name": "GitHub Actions",
+      "purpose": "Daily 2 baar (04:00 + 16:00 IST) pipeline khud chalata hai",
+      "category": "Automation",
+      "importance": 5,
+      "free_tier": "Public repo pe unlimited free minutes",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://docs.github.com/en/actions",
+      "status": "inbuilt"
+    },
+    {
+      "id": "github-pages",
+      "name": "GitHub Pages",
+      "purpose": "Control website live karna (docs/ folder)",
+      "category": "Hosting",
+      "importance": 5,
+      "free_tier": "Public repo pe 100GB bandwidth/month free",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://pages.github.com",
+      "status": "inbuilt"
+    },
+    {
+      "id": "instagram-graph",
+      "name": "Instagram Graph API",
+      "purpose": "Reel automatically upload/publish karna (ye system ka last step hai)",
+      "category": "Upload",
+      "importance": 5,
+      "free_tier": "100% free — bas Meta app + professional account chahiye",
+      "key_required": true,
+      "key_env": "INSTAGRAM_ACCESS_TOKEN",
+      "docs": "https://developers.facebook.com/docs/instagram-api",
+      "status": "required"
+    },
+    {
+      "id": "google-news-rss",
+      "name": "Google News RSS (STEP 0)",
+      "purpose": "Aaj ki LIVE cyber news dhundhna — bina kisi key ke",
+      "category": "News",
+      "importance": 5,
+      "free_tier": "100% free, no API key, unlimited",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://news.google.com/rss",
+      "status": "inbuilt"
+    },
+    {
+      "id": "pollinations",
+      "name": "Pollinations.ai Image API (STEP 3)",
+      "purpose": "18-25 cinematic anime images generate karna (1080x1920)",
+      "category": "Images",
+      "importance": 5,
+      "free_tier": "100% free, no API key — flux model",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://image.pollinations.ai",
+      "status": "inbuilt"
+    },
+    {
+      "id": "edge-tts",
+      "name": "Edge TTS (STEP 2 fallback)",
+      "purpose": "Hindi male voice over — Microsoft Neural voices",
+      "category": "Voice",
+      "importance": 4,
+      "free_tier": "100% free, no API key (hi-IN-MadhurNeural)",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://pypi.org/project/edge-tts/",
+      "status": "inbuilt"
+    },
+    {
+      "id": "gemini-tts",
+      "name": "Google Gemini TTS (STEP 2 — prompt file wali voice)",
+      "purpose": "Rasalgethi voice + Director's Notes — prompt file ki fixed voice",
+      "category": "Voice",
+      "importance": 5,
+      "free_tier": "AI Studio free tier (daily limit hoti hai)",
+      "key_required": true,
+      "key_env": "GEMINI_API_KEY",
+      "docs": "https://aistudio.google.com/apikey",
+      "status": "optional"
+    },
+    {
+      "id": "gemini-llm",
+      "name": "Google Gemini LLM (STEP 1 script + STEP 4 caption)",
+      "purpose": "90-120 shabd Hindi script, 18-25 moments, overlay lines, caption",
+      "category": "Script",
+      "importance": 5,
+      "free_tier": "Free tier me daily lakhon tokens milte hain",
+      "key_required": true,
+      "key_env": "GEMINI_API_KEY",
+      "docs": "https://aistudio.google.com/apikey",
+      "status": "optional"
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI API (STEP 1 script + STEP 2 voice + STEP 3 images)",
+      "purpose": "Best quality script (gpt-4o-mini), voice (tts), images (gpt-image-1)",
+      "category": "Script/Voice/Images",
+      "importance": 5,
+      "free_tier": "Paid API hai (₹ me) — connect redirect se key lagao",
+      "key_required": true,
+      "key_env": "OPENAI_API_KEY",
+      "docs": "https://platform.openai.com/api-keys",
+      "status": "optional"
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "purpose": "Ken Burns, text overlay, BGM mix, final 1080x1920 H.264 export",
+      "category": "Video Engine",
+      "importance": 5,
+      "free_tier": "100% free open source (Actions runner me pre-installed)",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://ffmpeg.org",
+      "status": "inbuilt"
+    },
+    {
+      "id": "newsapi",
+      "name": "NewsAPI.org",
+      "purpose": "Backup news source agar Google News RSS na chale",
+      "category": "News",
+      "importance": 2,
+      "free_tier": "Free dev tier: 100 req/day",
+      "key_required": true,
+      "key_env": "NEWSAPI_KEY",
+      "docs": "https://newsapi.org",
+      "status": "optional"
+    },
+    {
+      "id": "pexels",
+      "name": "Pexels API",
+      "purpose": "Extra B-roll video/photo stock (agar chaho to)",
+      "category": "Stock Media",
+      "importance": 1,
+      "free_tier": "200 req/hour free",
+      "key_required": true,
+      "key_env": "PEXELS_API_KEY",
+      "docs": "https://www.pexels.com/api/",
+      "status": "optional"
+    },
+    {
+      "id": "openverse",
+      "name": "Openverse API",
+      "purpose": "Free Creative-Commons images (backup visual source)",
+      "category": "Stock Media",
+      "importance": 1,
+      "free_tier": "100% free, no key (rate limited)",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://openverse.org/api",
+      "status": "optional"
+    },
+    {
+      "id": "nasa-apod",
+      "name": "NASA APOD API",
+      "purpose": "Free space images (fallback/texture ke liye)",
+      "category": "Stock Media",
+      "importance": 1,
+      "free_tier": "100% free with DEMO_KEY",
+      "key_required": false,
+      "key_env": "",
+      "docs": "https://api.nasa.gov",
+      "status": "optional"
+    }
+  ]
+}

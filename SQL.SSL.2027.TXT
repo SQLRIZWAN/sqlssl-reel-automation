@@ -1,0 +1,778 @@
+# SQL.SSL — एडवांस इंस्टाग्राम रील क्रिएशन मास्टर प्रॉम्प्ट v3.0
+# Account: @sql.ssl (Rizwan) | Updated: Audience-Insight-Driven Version (12 June 2026 Manus Analysis के आधार पर)
+
+## 🎬 SQL.SSL REEL QUALITY ADD-ON — इसे Master Prompt File के साथ हर बार लागू करो
+
+हर Reel पिछली सफल Reel जैसी cinematic, scene-specific और high-quality बनाओ। Generic hacker posters, random dark backgrounds, abstract code या एक जैसी images बिल्कुल मत बनाओ। पहले live news → 90–120 शब्दों की script → voice duration → 18–25 visual moments → हर moment के लिए अलग exact scene → animation → final video का क्रम हमेशा follow करो।
+
+**VOICE RULE — सबसे महत्वपूर्ण:**
+Voice की शुरुआत सीधे news की बात से हो। "रुकिए", "रुकिए—", "सुनिए", "ध्यान दीजिए" या कोई generic intro बिल्कुल नहीं होना चाहिए। पहली line direct shocking fact या direct warning हो, जैसे: "बेंगलुरु में एक crypto-investment scam ने एक व्यक्ति से ₹93.58 लाख ठग लिए।" Voice deep, heavy, serious, natural और conversational male Hindi हो; शुरुआत में कोई greeting या filler नहीं। आखिरी line में @sql.ssl Follow CTA जरूर हो।
+
+**VISUAL QUALITY RULE:**
+हर image voice की exact line को visually दिखाए। Script को 18–25 छोटे moments में तोड़ो और हर moment के लिए पहले यह लिखो: (1) voice line, (2) exact scene, (3) क्या नहीं दिखाना। फिर image generate करो।
+
+हर visual में यह fixed style रखो:
+"Cinematic cyberpunk anime style, 2D digital painting, thin glowing outlines, neon cyan/red/gold lighting, dramatic realistic composition, 9:16 vertical aspect ratio, main subject centered, mobile-safe padding, detailed environment, strong depth and cinematic contrast."
+
+**SCENE ACCURACY:**
+- WhatsApp scam बोले तो असली WhatsApp-जैसा chat/investment group और suspicious message दिखाओ।
+- Telegram बोले तो Telegram-जैसा group/channel context दिखाओ।
+- Bengaluru/India बोले तो Bengaluru skyline, Indian victim, Indian rupee और Indian setting दिखाओ।
+- Fake profit बोले तो fabricated trading dashboard और artificial green returns दिखाओ।
+- Repeated transfers बोले तो phone, bank-transfer trail और draining balance दिखाओ।
+- Mule accounts बोले तो connected bank-account network और investigator evidence दिखाओ।
+- APK बोले तो phone पर untrusted APK install warning दिखाओ।
+- OTP बोले तो six-digit OTP interception/blocking दिखाओ।
+- Crypto wallet बोले तो rupee-to-crypto money trail दिखाओ।
+- Safety tip बोले तो वही exact action दिखाओ: APK reject, OTP lock, official app verification आदि।
+- हर scene अलग हो; एक ही hacker या same composition repeat मत करो।
+
+**BRANDING RULE:**
+हर image में @sql.ssl / SQL.SSL branding naturally embedded हो—phone corner, monitor signature, jacket emblem, code line या environment detail में। Thumbnail/closing frame में attached @sql.ssl profile logo को identity reference की तरह use करो; fake logo या generic logo मत बनाओ। Thumbnail में login screen या hacked-account screen नहीं होना चाहिए।
+
+**TEXT OVERLAY RULE:**
+हर image के center/middle safe zone में उसी moment की 5–8 शब्दों की bold Hindi key line overlay करो। Bottom 20% या top 10% में text मत रखो। White bold text, dark outline/shadow, readable size, high contrast। Devanagari text सही render होना चाहिए—boxes, broken glyphs या unreadable text दिखे तो frame regenerate/fix करो। English technical terms को जरूरत हो तो Hindi script में लिखो: Crypto = क्रिप्टो, OTP = ओटीपी, APK = एपीके।
+
+**VIDEO RULE:**
+हर image पर subtle Ken Burns zoom/pan लगाओ; plain slideshow नहीं। Voice की exact measured duration के बराबर final video रखो। Voice dominant हो, BGM subtle dark cyberpunk electronic instrumental हो, fade-in/fade-out के साथ। Final export 1080×1920 vertical H.264 MP4 में हो।
+
+**FINAL CHECK — upload से पहले सभी points verify करो:**
+```
+[ ] Voice direct news line से शुरू हुई; "रुकिए" या filler नहीं है
+[ ] Script 90–120 शब्द है और आखिरी line Follow CTA है
+[ ] 18–25 अलग scenes हैं
+[ ] हर scene voice line से 100% match करता है
+[ ] हर image में natural @sql.ssl branding है
+[ ] हर image का Hindi overlay center safe zone में साफ readable है
+[ ] कोई generic/random hacker visual नहीं है
+[ ] Ken Burns motion लगा है
+[ ] Final duration = measured voice duration
+[ ] Caption, 3-tier hashtags और @sql.ssl Follow CTA मौजूद हैं
+```
+
+---
+
+
+
+यह प्रॉम्प्ट आपको हर दिन एक **बिल्कुल नई, रियल न्यूज़-बेस्ड** इंस्टाग्राम रील बनाने में मार्गदर्शन करेगा। **वीडियो की लंबाई हमेशा वॉयस ओवर की असली अवधि के बराबर होगी** — कोई भी चीज़ fixed नहीं है।
+
+> ⚠️ **सबसे ज़रूरी नियम:** पहले स्क्रिप्ट लिखो → फिर voice over बनाओ → voice over की असली duration नापो → उसी duration के हिसाब से इमेज का समय और BGM सेट करो → Ken Burns animation करो → वीडियो असेंबल करो। **इस क्रम को कभी मत तोड़ो।**
+
+> 🔒 **टूल्स नियम (अनिवार्य):** इस प्रॉम्प्ट में जो टूल्स निर्धारित किए गए हैं, उनके साथ कोई भी छेड़छाड़ नहीं करनी है। टूल के नाम, पैरामीटर या उपयोग का तरीका बिल्कुल वैसा ही रखना है जैसा लिखा है — कोई बदलाव नहीं।
+
+> 🚫 **ZERO QUESTIONS POLICY (अनिवार्य — सबसे ज़रूरी):**
+> यह document **पूरा Master Prompt Guide** है — STEP 0 से STEP 7 तक हर चीज़ इसमें मौजूद है: news research, script, voice, images, animation, music, video assembly, caption, hashtags, posting time, सब कुछ।
+> **AI को इस प्रॉम्प्ट को execute करने से पहले या बीच में, किसी भी चीज़ को लेकर मुझसे (user से) कोई सवाल नहीं पूछना है** — चाहे वो topic चुनना हो, voice/music/image style हो, duration हो, posting time हो, या कुछ भी।
+> अगर कोई चीज़ unclear लगे, तो इस प्रॉम्प्ट में दी गई rules/defaults के अनुसार खुद decide करो और आगे बढ़ो। हर दिन independently और बिना रुके पूरा वीडियो बना कर तैयार करो।
+
+---
+
+## ✅ PRE-EXECUTION CHECKLIST (शुरू करने से पहले यह 8 lines खुद से बोलो)
+
+> ⚠️ **यह checklist अनिवार्य है। हर बार वीडियो बनाने से पहले, AI इन 8 points को एक-एक करके अपने आउटपुट में लिखे (confirm करे) कि यह follow करेगा। बिना इस confirmation के STEP 0 शुरू मत करो।**
+
+```
+[ ] 1. STEP 0 — आज की तारीख के हिसाब से calendar से topic लूँगा + LIVE web search करूँगा (पुरानी news नहीं)
+[ ] 2. STEP 1 — Script 90-120 शब्द, 18-25 visual moments, पहली line SCROLL-STOPPER, आखिरी line Follow CTA
+[ ] 3. STEP 2 — Voice = Gemini TTS + Rasalgethi + Director's Notes (deep/serious/slow) ज़रूर साथ भेजूँगा
+[ ] 4. STEP 3 — हर image में: @sql.ssl branding + CENTER (middle zone) text overlay + Voice-Image Sync table फॉलो करूँगा
+[ ] 5. STEP 3B — Ken Burns animation हर image पर लगाऊँगा, video_no_audio.mp4 बनाऊँगा (skip नहीं करूँगा)
+[ ] 6. STEP 4 — Caption + 3-Tier Hashtags (3 Large + 4 Medium + 3 Niche, #sqlssl ज़रूर) + Follow CTA
+[ ] 7. STEP 5 — BGM = Dark Cyberpunk Electronic, 80-100 BPM, fade-in/out, VOICE_DURATION जितना लंबा
+[ ] 8. STEP 6+7 — Voice:2.2 / BGM:0.30 mix, duration = VOICE_DURATION, upload 7:30-8:30 PM IST, Golden Hour engagement
+```
+
+> 🔴 **अगर इनमें से कोई भी एक point skip हुआ → वीडियो incomplete माना जाएगा। दोबारा से उस step को पूरा करो, फिर आगे बढ़ो।**
+
+---
+
+---
+
+## 📊 AUDIENCE INSIGHTS (Manus AI Analysis — 12 June 2026 Reports से)
+
+> ⚠️ **यह section AI को हर video बनाते समय ध्यान में रखना है।** यह @sql.ssl account के actual followers (16.4K) के analysis से निकला है — इसे ignore मत करो, यह बताता है कि **audience असल में क्या चाहती है।**
+
+**Audience कौन है:**
+- ज़्यादातर **"General Public"** (online fraud से बचना चाहते हैं) + कुछ **"Aspiring Tech/Hacking learners"** + **Gen-Z/Youth** (viral tech news में interested)
+- Mindset = **"Curiosity + Fear"** — (1) अपना bank account/WhatsApp hack न हो जाए, (2) कुछ ऐसा जानना चाहते हैं जो "दूसरों को नहीं पता", (3) hacking को एक "superpower" की तरह देखते हैं
+- Content language: **Hindi (80%) + Hinglish (20%)** — यही ratio maintain करो, पूरा hardcore technical English मत करो
+
+**कौन सा Content सबसे ज़्यादा चलता है (असली data से):**
+
+| Topic Type | Performance | क्यों |
+|---|---|---|
+| **Data Breach / Password Leak** | सबसे ज़्यादा Views + Engagement | लोगों को लगता है उनका खुद का data हो सकता है — personal fear trigger होता है |
+| **AI Bank Account Attack / Banking Fraud** | अच्छा | Direct पैसे का डर |
+| **AI Voice Cloning Fraud** | Medium | Curiosity + Fear दोनों |
+| **Generic/abstract hacker content** | सबसे कम | Audience को relatable नहीं लगता |
+
+> 🎯 **इसका मतलब:** Calendar में Category B (Scams), E (Data Leak), और A (Cyber Attack — bank/govt) वाले दिन सबसे ज़्यादा importance दो — script लिखते समय इन्हें ज़्यादा "personal danger" angle से लिखो: *"आपका डेटा भी इसमें हो सकता है"*, *"आपका account भी खतरे में है"*।
+
+**Content Format Recommendations (Manus report से):**
+- **"How-to" बचाव guides** ज़्यादा बनाओ — जैसे "WhatsApp hack hone se kaise bachen", "Fake call kaise pehchanein"
+- **Live/Trending scams** पर turant reel बनाओ (Electricity bill scam, KBC scam type)
+- **Myth Busters** format भी try करो — "क्या सच में VPN लगाने से आप untraceable हो जाते हो? सच जानो"
+- **Saveable posts** — ऐसा content जिसे लोग save करें for later (जैसे "Cyber Crime Helpline Numbers India")
+
+> 📌 **नया CTA variation (STEP 4 के मुख्य CTA के साथ alternate करो):**
+> *"इस video को अपने parents और दोस्तों को ज़रूर भेजें — ताकि वो भी safe रहें। और ऐसी जानकारी रोज़ पाने के लिए @sql.ssl को Follow करें।"*
+> यह "family safety" angle Hero Complex + Safety mindset दोनों को target करता है और शेयर बढ़ता है।
+
+---
+
+---
+
+## 📅 30-दिन का कंटेंट कैलेंडर (Monthly Rotation Plan)
+
+> ### 🤖 AI के लिए निर्देश — सबसे पहले यह करो:
+> 1. **आज की exact तारीख देखो** (जैसे: 5 मई = दिन 5)
+> 2. **नीचे दी गई table में उस दिन की Category और Topic देखो**
+> 3. **वही Category और Topic लेकर STEP 0 में उसी के keywords से research करो**
+> 4. **ऊपर दिए गए AUDIENCE INSIGHTS के अनुसार — अगर topic Category B, E, या A (bank/personal data) से जुड़ा है, तो script में "personal danger" angle ज़रूर डालो**
+> 5. **उसी topic पर पूरी रील बनाओ**
+>
+> यह calendar हर महीने repeat होगा — 1 तारीख से 30 तारीख तक। 31 तारीख हो तो दिन 30 का topic use करो।
+
+---
+
+| दिन | Category | मुख्य Topic | Focus |
+|---|---|---|---|
+| **01** | 🔴 A | **साइबर हमला — सरकारी वेबसाइट** | किस देश/राज्य की govt site hack हुई |
+| **02** | 💸 B | **WhatsApp स्कैम** | नया WhatsApp fraud तरीका |
+| **03** | 📱 D | **फोन स्पाईवेयर जागरूकता** | कौन सा spy app लोगों को track कर रहा है |
+| **04** | 🎭 G | **Deepfake वीडियो स्कैम** | AI से बना fake video ठगी के लिए use |
+| **05** | 🌐 H | **Instagram Account हैक** | सोशल मीडिया अकाउंट चोरी की घटना |
+| **06** | 🦠 F | **नया Ransomware अटैक** | किस company या hospital पर ransomware |
+| **07** | 🌑 C | **डार्क वेब डेटा बिक्री** | किसका डेटा dark web पर बिक रहा है |
+| **08** | 💸 B | **Investment / शेयर मार्केट स्कैम** | नकली trading app या Telegram group ठगी |
+| **09** | 🔴 A | **बैंक / Financial System पर हमला** | किस बैंक या payment system को target किया |
+| **10** | 🔓 E | **Password लीक — Data Breach** | कितने करोड़ passwords dark web पर |
+| **11** | 🎭 G | **AI Voice Cloning Fraud** | AI से नकली आवाज़ बनाकर रिश्तेदारों को ठगा |
+| **12** | 📱 D | **Android Stalkerware Expose** | कौन सा app secretly camera/mic on करता है |
+| **13** | 🌐 H | **YouTube Channel Hack** | बड़े YouTuber का channel कैसे हैक हुआ |
+| **14** | 💸 B | **OTP / Fake Customer Care स्कैम** | बैंक का नकली नंबर देकर OTP ठगी |
+| **15** | 🌑 C | **डार्क वेब मार्केटप्लेस बंद** | Police ने कौन सा dark web market bust किया |
+| **16** | 🔴 A | **Hospital / Infrastructure Cyber Attack** | अस्पताल या बिजली पानी system पर हमला |
+| **17** | 🦠 F | **Banking Trojan / Mobile Virus** | नया banking virus जो account खाली करता है |
+| **18** | 🎭 G | **Phishing Email / SMS अटैक** | नकली email/SMS से लाखों की ठगी |
+| **19** | 🔓 E | **Indian Database Leaked** | भारतीय नागरिकों का डेटा कहाँ leaked हुआ |
+| **20** | 💸 B | **Digital Arrest स्कैम** | नकली CBI/Police call से डरा कर ठगी |
+| **21** | 📱 D | **iPhone / Android Hack — Zero Click** | बिना click किए phone हैक होने की खबर |
+| **22** | 🔴 A | **Hacker Gang गिरफ्तार** | साइबर क्रिमिनल गैंग का भंडाफोड़ |
+| **23** | 🌐 H | **Facebook / Telegram Account Hack** | सोशल मीडिया पर identity theft |
+| **24** | 🌑 C | **डार्क वेब — नकली Passport/Documents** | dark web पर fake documents की बिक्री |
+| **25** | 🦠 F | **Play Store / App Store Malware** | official store में नकली खतरनाक app |
+| **26** | 🎭 G | **Fake Job Offer / HR Scam** | नकली नौकरी offer से data और पैसा चोरी |
+| **27** | 💸 B | **WhatsApp / Telegram Crypto Scam** | crypto investment group scam |
+| **28** | 🔓 E | **Company Employee Data Breach** | किसी बड़ी company के employees का data leaked |
+| **29** | 🔴 A | **Nation-State Cyber War** | दो देशों के बीच cyber warfare की खबर |
+| **30** | 📱 D | **Phone Security Special — बचाव Guide** | फोन को 100% safe रखने के तरीके |
+
+---
+
+> ### 📌 Calendar Rules (AI ज़रूर पढ़े):
+> - **हर दिन की Category और Focus के अनुसार ही STEP 0 में research करनी है**
+> - अगर उस दिन का exact topic trending नहीं है तो उसी Category (A/B/C...) की कोई भी ताज़ा खबर लो
+> - **Calendar repeat होता है** — यानी अगले महीने 1 तारीख को फिर "साइबर हमला — सरकारी वेबसाइट" topic
+> - एक ही topic दो बार नहीं आना चाहिए — हर बार नई घटना, नई खबर
+
+---
+
+## STEP 0 — आज की हैकिंग न्यूज़ रिसर्च (Daily News Research — सबसे पहला कदम)
+
+> **यह स्टेप अनिवार्य है। कोई भी टूल चलाने से पहले यह रिसर्च पूरी करें।**
+
+> 🔴 **LIVE NEWS ONLY — आज की तारीख की ही न्यूज़ लेनी है। पुरानी, stored या cached न्यूज़ बिल्कुल नहीं। हर बार real-time web search करके ताज़ा घटना निकालो।**
+
+**AI को क्या करना है:**
+
+1. **वेब सर्च करें** — आज की exact तारीख के अनुसार नीचे दिए **सभी categories** में से real-time खोज करें। AI हर category में से एक सर्च करे और सबसे ताज़ा + viral topic चुने:
+
+   ---
+
+   ### 🔴 Category A — साइबर हमले (Cyber Attacks)
+   - `"cyber attack today [CURRENT DATE]"`
+   - `"hacking news today [CURRENT DATE]"`
+   - `"live cyber attack [CURRENT DATE]"`
+   - `"government website hacked [CURRENT DATE]"`
+   - `"hospital ransomware attack today"`
+   - `"साइबर हमला आज [CURRENT DATE]"`
+   - `"देश पर साइबर हमला"`
+
+   ---
+
+   ### 💸 Category B — ऑनलाइन स्कैम और धोखाधड़ी (Online Scams & Fraud)
+   - `"new online scam today [CURRENT DATE]"`
+   - `"WhatsApp scam today"`
+   - `"UPI fraud new method [CURRENT DATE]"`
+   - `"bank account fraud today"`
+   - `"investment scam exposed [CURRENT DATE]"`
+   - `"fake job offer scam"`
+   - `"OTP fraud news today"`
+   - `"नया ऑनलाइन स्कैम आज"`
+   - `"ठगी का नया तरीका [CURRENT DATE]"`
+   - `"डिजिटल अरेस्ट स्कैम"`
+
+   ---
+
+   ### 🌑 Category C — डार्क वेब (Dark Web)
+   - `"dark web data leak today"`
+   - `"dark web marketplace busted [CURRENT DATE]"`
+   - `"stolen data sold dark web"`
+   - `"dark web Indian data leak"`
+   - `"dark web hacker arrested"`
+   - `"डार्क वेब डेटा लीक"`
+
+   ---
+
+   ### 📱 Category D — फोन हैकिंग और स्पाइवेयर (Phone Hacking & Spyware Awareness)
+   - `"phone hacking spyware news today"`
+   - `"stalkerware app exposed [CURRENT DATE]"`
+   - `"pegasus spyware news"`
+   - `"Android iPhone hack news today"`
+   - `"spy app secretly installed phone news"`
+   - `"mobile phone surveillance news [CURRENT DATE]"`
+   - `"फोन हैकिंग स्पाईवेयर"`
+   - `"मोबाइल हैक खबर आज"`
+
+   > 📌 **जागरूकता नोट:** फोन हैकिंग की खबरें इसलिए ज़रूरी हैं क्योंकि लोग अनजाने में अपने फोन पर spy apps install करवा लेते हैं। Awareness ही बचाव है।
+
+   ---
+
+   ### 🔓 Category E — डेटा लीक और प्राइवेसी (Data Breach & Privacy)
+   - `"data breach today [CURRENT DATE]"`
+   - `"user data leaked [CURRENT DATE]"`
+   - `"password leak news today"`
+   - `"Indian database leaked"`
+   - `"company data exposed [CURRENT DATE]"`
+   - `"डेटा लीक खबर आज"`
+
+   ---
+
+   ### 🦠 Category F — वायरस, मैलवेयर और रैंसमवेयर (Malware & Ransomware)
+   - `"ransomware attack today [CURRENT DATE]"`
+   - `"new malware discovered [CURRENT DATE]"`
+   - `"trojan virus news today"`
+   - `"banking malware 2025"`
+   - `"Android malware app Play Store"`
+   - `"वायरस रैंसमवेयर खबर"`
+
+   ---
+
+   ### 🎭 Category G — सोशल इंजीनियरिंग और फिशिंग (Social Engineering & Phishing)
+   - `"phishing attack today [CURRENT DATE]"`
+   - `"deepfake scam news today"`
+   - `"AI voice cloning fraud news"`
+   - `"CEO fraud business email compromise"`
+   - `"fake customer support scam"`
+   - `"फिशिंग अटैक न्यूज़"`
+   - `"डीपफेक धोखाधड़ी"`
+
+   ---
+
+   ### 🌐 Category H — सोशल मीडिया हैकिंग (Social Media Hacking)
+   - `"Instagram account hacked news today"`
+   - `"Facebook hack news [CURRENT DATE]"`
+   - `"YouTube channel hacked today"`
+   - `"Twitter X account compromised news"`
+   - `"social media scam today"`
+   - `"इंस्टाग्राम हैक खबर"`
+
+2. **सबसे बड़ी/वायरल न्यूज़ चुनें** — ऊपर दी गई 8 categories में से जो सबसे ताज़ा और इम्पैक्टफुल घटना मिले वह चुनो। हर वीडियो अलग category से बनाओ ताकि channel पर variety रहे:
+
+   | Category | Topic | उद्देश्य |
+   |---|---|---|
+   | A | साइबर हमले | देश, सरकार, बड़ी कंपनी पर हमला |
+   | B | ऑनलाइन स्कैम | WhatsApp, UPI, नौकरी, Investment धोखाधड़ी |
+   | C | डार्क वेब | डेटा बिकना, marketplace bust, anonymous crime |
+   | D | फोन हैकिंग जागरूकता | Spyware, Stalkerware से कैसे बचें |
+   | E | डेटा लीक | Password, Personal Info exposed |
+   | F | वायरस / Ransomware | नया Malware, Banking Trojan |
+   | G | Social Engineering | Deepfake, AI Voice Cloning Fraud |
+   | H | सोशल मीडिया हैक | Instagram, YouTube, Facebook account |
+
+3. **न्यूज़ सारांश नोट करें:** घटना क्या है? किसे निशाना बनाया गया? खतरा क्या है? लोग कैसे बच सकते हैं?
+
+4. **अगर आज कोई बड़ी न्यूज़ नहीं मिली** → इस हफ्ते की सबसे ट्रेंडिंग साइबर न्यूज़ चुनें — लेकिन पहले आज की पूरी खोज ज़रूर करें।
+
+---
+
+## STEP 1 — स्क्रिप्ट लिखें (90–120 शब्द)
+
+STEP 0 की न्यूज़ के आधार पर **शुद्ध हिंदी स्क्रिप्ट** लिखें।
+
+**शर्तें:**
+- **शब्द संख्या: 90 से 120 शब्द** (यह ~30–40 सेकंड का audio देगा, 18–25 इमेज के लिए सही)
+- **भाषा:** शुद्ध हिंदी (Technical Terms जैसे Ransomware, VPN English में ठीक)
+- **टोन:** गंभीर, सतर्क करने वाला
+
+**संरचना (हर row = एक इमेज का दृश्य):**
+
+| दृश्य | विषय | अनुमानित शब्द |
+|---|---|---|
+| 1 — Hook | **⚡ SCROLL-STOPPER — पहला वाक्य ऐसा हो कि देखने वाला रुक जाए** | 10–12 |
+| 2 — घटना का परिचय | क्या हुआ, कहाँ हुआ | 15–18 |
+| 3 — हमले का तरीका | कैसे हुआ | 12–15 |
+| 4 — प्रभाव (संस्था पर) | क्या नुकसान हुआ | 12–15 |
+| 5 — प्रभाव (आम लोगों पर) | आपका डेटा/पैसा खतरे में | 12–15 |
+| 6 — हैकर/अपराधी | किसने किया | 10–12 |
+| 7 — वैश्विक चेतावनी | दुनिया भर में खतरा | 10–12 |
+| 8 — बचाव टिप 1 | एक सरल उपाय | 8–10 |
+| 9 — बचाव टिप 2 | दूसरा उपाय | 8–10 |
+| 10 — CTA | **"@sql.ssl को अभी Follow करें — ऐसी खबरें रोज़ देखनी हैं तो।"** | 5–8 |
+
+> 🔴 **SCROLL-STOPPER नियम (दृश्य 1 के लिए अनिवार्य):**
+> Script की पहली line ऐसी होनी चाहिए जो देखने वाले को तुरंत रोक दे। इसके लिए इन formats में से एक use करें:
+> - **चौंकाने वाला सवाल:** *"क्या आपका फोन अभी भी हैक हो रहा है और आपको पता तक नहीं?"*
+> - **shocking तथ्य:** *"आज रात __ करोड़ भारतीयों का डेटा dark web पर बिक रहा है।"*
+> - **direct warning:** *"रुकिए — यह गलती आपका बैंक खाता खाली कर सकती है।"*
+> - **mystery/suspense:** *"एक हैकर ने __ मिनट में पूरे सिस्टम को तबाह कर दिया — तरीका जानकर आप भी हैरान रह जाएंगे।"*
+>
+> **पहला वाक्य = viewer का attention पकड़ना। अगर यह चूक गया तो scroll हो जाएगा।**
+
+---
+
+## STEP 2 — Voice Over बनाएँ और Duration नापें
+
+### A) Voice Over Generate करें
+
+**आवाज़ (Fixed — कभी नहीं बदलेगी):**
+- **नाम:** `SQL 💉`
+- **TTS Model:** `Gemini TTS` — यही model use करना है, कोई और नहीं
+- **Voice Profile:** `Rasalgethi` — यही voice profile fixed है, कभी नहीं बदलेगी
+- **प्रकार:** पुरुष आवाज़ (Male Voice) — **भारी, गहरी और दमदार आवाज़ (Deep & Heavy Male Voice)**
+- **टोन:** गंभीर, सतर्क करने वाला — **लेकिन स्टाइल Conversational और Natural रहेगा**
+- **स्टाइल:** जैसे कोई जानकार और भरोसेमंद दोस्त सीधे आपसे बात कर रहा हो — robotic या newsreader जैसा बिल्कुल नहीं। बोलने का तरीका natural flow में होगा, जहाँ ज़रूरी हो वहाँ थोड़ा रुकेगा, ज़ोर देगा — जैसे असली बातचीत हो।
+- **भाषा:** स्पष्ट देवनागरी हिंदी — हर शब्द साफ और सुनाई देने वाला
+
+> **नोट:** आवाज़ हल्की या पतली बिल्कुल नहीं होनी चाहिए। Rasalgethi voice की natural depth और weight को maintain करो — delivery इतनी natural हो कि viewer को लगे कोई उनसे personally बात कर रहा है, कोई script नहीं पढ़ रहा।
+
+> 🎬 **Director's Notes (Gemini TTS को voice generate करते समय यह instruction साथ में ज़रूर दो — यह voice का mood/tone control करता है):**
+>
+> *"Speak in a deep, heavy, serious and commanding male voice — slow and deliberate pacing, with weight and gravity in every word, like a confident expert delivering an urgent warning. Add natural pauses for emphasis on important words. Tone should sound grave and cautionary, not cheerful or upbeat — like a trusted insider revealing something serious in a calm but intense way."*
+>
+> इस Director's Note को हर बार Gemini TTS को script के साथ भेजो — यह Rasalgethi voice को ज़्यादा गहरा, गंभीर और realistic बनाने में मदद करता है।
+
+STEP 1 की पूरी स्क्रिप्ट **Gemini TTS — Rasalgethi voice** से generate करें।
+
+**उपयोग किया गया टूल:** `Gemini TTS` | **Voice Profile:** `Rasalgethi`
+
+---
+
+### B) Voice Over की असली Duration नापें (अनिवार्य)
+
+```bash
+VOICE_DURATION=$(ffprobe -v error -show_entries format=duration \
+  -of default=noprint_wrappers=1:nokey=1 /home/ubuntu/narration.wav)
+
+echo "Voice Over Duration: $VOICE_DURATION seconds"
+```
+
+> **इस $VOICE_DURATION को आगे के सभी steps में use करें। कोई fixed number मत लिखें।**
+
+---
+
+### C) प्रति इमेज का समय calculate करें
+
+```bash
+NUM_IMAGES=20  # 18 से 25 के बीच — जितनी इमेज बनाई हों
+IMAGE_DURATION=$(echo "scale=4; $VOICE_DURATION / $NUM_IMAGES" | bc)
+echo "प्रति इमेज Duration: $IMAGE_DURATION seconds"
+```
+
+---
+
+## STEP 3 — इमेज बनाएँ (18–25 Images — न्यूज़ के अनुसार)
+
+> 🎯 **100% Voice-Image Sync Blueprint (अनिवार्य — कभी न तोड़ें):**
+>
+> **सबसे पहले यह करो — Image बनाने से पहले:**
+> STEP 1 की पूरी script लो → उसे 18–25 छोटे moments में तोड़ो → हर moment के लिए एक row बनाओ → फिर हर row के हिसाब से image generate करो।
+>
+> **हर image बनाते समय यह 3 सवाल खुद से पूछो:**
+> 1. इस exact second पर voice में **क्या बोला जा रहा है?**
+> 2. उस बात को visually दिखाने के लिए **क्या scene बनाना होगा?**
+> 3. क्या मेरी image और voice line **100% एक ही बात कह रहे हैं?**
+>
+> अगर तीसरे सवाल का जवाब "नहीं" है → image reject करो, दोबारा बनाओ।
+>
+> ---
+>
+> **📋 Voice–Image Sync Table — हर बार यह table भरकर images बनाओ:**
+>
+> | Image # | Voice में बोली जा रही line | Image में क्या दिखना चाहिए | ❌ क्या नहीं दिखाना |
+> |---|---|---|---|
+> | 1 | Hook line — पहला चौंकाने वाला वाक्य | वही shocking element जो line में है — जैसे "डेटा चोरी" बोला तो data vault टूटता दिखे | Random hacker face |
+> | 2 | घटना की जगह / देश / कंपनी का नाम | उसी देश/कंपनी की building या logo — recognizable visual | कोई दूसरा देश या generic office |
+> | 3 | "कैसे हुआ" — attack का तरीका | हैकिंग का वो exact method — phishing हो तो fake email, ransomware हो तो locked screen | सिर्फ hacker बैठा हो बिना context के |
+> | 4 | संस्था पर क्या असर पड़ा | Server room में chaos, data lines टूटती हुईं, system crash screen | Empty dark room |
+> | 5 | आम लोगों पर असर | Normal person का phone या laptop — scared expression, empty bank notification | Corporate building again |
+> | 6 | हैकर / अपराधी कौन है | उस group का visual — lone hacker, criminal gang, या state actor | Unrelated cyber art |
+> | 7 | दुनिया भर में खतरा | World map पर red/orange lines फैलती हुईं — attack spreading globally | Single country map |
+> | 8 | बचाव टिप 1 | वो exact action — "VPN use करो" बोलो तो VPN shield icon, "2FA" बोलो तो phone with lock | Abstract security image |
+> | 9 | बचाव टिप 2 | दूसरे उपाय का exact visual — "password बदलो" तो password change screen | Same image as tip 1 |
+> | 10 | CTA — Follow @sql.ssl | Energy वाला closing frame — viewer को action लेने का feel | Boring text-only slide |
+> **बाकी images (11–25) भी इसी pattern में बनाओ** — voice line पहले लिखो, फिर उसका exact visual describe करो, फिर image generate करो।
+>
+> ---
+>
+> **⛔ सबसे Common Mistakes जो हर बार होती हैं — इन्हें कभी मत करो:**
+>
+> | ❌ गलती | ✅ सही तरीका |
+> |---|---|
+> | "Bank hack हुआ" बोला → generic hacker image बनाई | Bank का server room दिखाओ, ATM screen पर error दिखाओ |
+> | "WhatsApp scam" बोला → random phone image बनाई | WhatsApp chat screen दिखाओ जिसमें fake message visible हो |
+> | "Dark web" बोला → dark background पर code दिखाया | Dark web browser interface, hidden marketplace UI दिखाओ |
+> | "भारत में हुआ" बोला → generic world map दिखाई | India map highlight करो, Indian flag या city silhouette दिखाओ |
+> | हर image में एक जैसा hacker दिखाया | हर scene अलग — कभी victim, कभी server, कभी hacker, कभी warning screen |
+>
+> **Rule:** Voice line = Image description। दोनों को एक ही sentence में describe किया जाए — अगर नहीं हो सकता तो sync नहीं है।
+
+**Fixed Style (हर इमेज प्रॉम्प्ट में यह ज़रूर जोड़ें):**
+> *"साइबरपंक एनीमे शैली, 2D डिजिटल पेंटिंग, पतली चमकती हुई आउटलाइन, नियॉन रंग, 9:16 आस्पेक्ट रेश्यो, मुख्य विषय केंद्र में, मोबाइल स्क्रीन के लिए पर्याप्त पैडिंग।"*
+
+> 🔖 **@sql.ssl Branding Rule (हर इमेज में — अनिवार्य):**
+> **हर एक इमेज में '@sql.ssl' कहीं न कहीं दिखना चाहिए** — लेकिन promotional नहीं, organic और naturally embedded लगे। Placement इन में से कोई एक चुनो जो उस scene में सबसे natural लगे:
+>
+> | Placement | कब use करें |
+> |---|---|
+> | **हैकर की jacket के chest पर** — जहाँ company logo होता है, वहाँ 'SQL.SSL' का छोटा embroidered emblem | जब हैकर/साइबर ऑपरेटर का scene हो |
+> | **हैकर की jacket की पीठ पर** — subtle stitched insignia की तरह | wide/back shot में हैकर दिखे तो |
+> | **कोड की लाइनों में** — terminal या screen पर बहते हुए code में एक line: `// sql.ssl` या `> connected: sql.ssl` | जब screen/terminal/code का scene हो |
+> | **Building की glass windows पर** — projection-mapped text में बहुत हल्के से | शहर/building का wide shot हो तो |
+> | **Monitor corner पर** — किसी भी screen के कोने में बहुत छोटे font में system signature की तरह | multi-monitor/dashboard scene में |
+> | **Dark background में** — scene के किसी कोने में धुंधला सा, जैसे watermark नहीं बल्कि scene का हिस्सा हो | जब कोई और placement fit न हो |
+
+> 📝 **[UPDATED] TEXT OVERLAY Rule (हर इमेज पर — अनिवार्य):**
+> **हर इमेज के center area में उस scene की key line bold Hindi text में overlay होनी चाहिए — bottom में नहीं।**
+> क्यों ज़रूरी है: Instagram पर 85% लोग sound OFF करके scroll करते हैं — अगर screen पर कुछ नहीं लिखा तो वो रुकेंगे ही नहीं। साथ ही, Instagram Reels का bottom हिस्सा (caption, username, music sticker, action buttons) हमेशा UI से ढका रहता है — वहाँ text डालने से वो **screen पर दिखता ही नहीं।**
+>
+> **Text Overlay Rules (Updated):**
+> - Position: **Screen के center / middle zone में** (vertically बीच का 40-50% हिस्सा) — यही "Safe Zone" है जो Instagram के किसी UI element से नहीं ढकती
+> - कभी भी bottom 20% या top 10% में text मत डालो — वहाँ Instagram के icons/captions text को छुपा देते हैं
+> - Font: Bold, white color, हल्का dark shadow/outline ताकि हर background पर साफ दिखे
+> - Size: Screen width का 80-90% — पढ़ने लायक हो, center में horizontally aligned
+> - Content: उस इमेज के moment की 5-8 शब्दों की key line (script से लो)
+> - Example: अगर voice में बोल रहा है "आज रात 5 करोड़ भारतीयों का डेटा चोरी हुआ" तो overlay में लिखो: **"5 करोड़ भारतीयों का डेटा चोरी!"** — यह text screen के center में दिखे
+> - इमेज 1 (थंबनेल) पर text बड़ा, striking और center में होना चाहिए — यह scroll-stopper का हिस्सा है
+
+> ⚡ **18–25 इमेज क्यों:** कम इमेज होने पर एक ही फ्रेम बहुत देर तक स्क्रीन पर रहता है जो viewer को bore करता है और वो scroll कर देता है। ज़्यादा इमेज = fast-paced visual = viewer engaged रहता है।
+
+STEP 1 की script की हर row + sub-line के लिए एक इमेज बनाएँ। Script को 18–25 visual moments में तोड़ो:
+
+- **इमेज 1 (थंबनेल — Hook):**
+
+  > 🖼️ **Profile DP (अनिवार्य — Dummy नहीं):**
+  > थंबनेल में जो भी @sql.ssl की identity दिखे, वह **@sql.ssl का असली लोगो** होना चाहिए — एक काले गोल background पर golden triangle, illuminati eye और red syringe वाला design, नीचे "SQL" लिखा हुआ।
+
+  > 🚫 **थंबनेल में "Login Screen" या "Hacked Account" जैसा obvious feel बिल्कुल नहीं आना चाहिए।** यह देखने वाले के दिमाग में टकराए नहीं — बल्कि बैठ जाए, naturally absorb हो जाए जैसे code में कुछ embed हो।
+
+  > ⚡ **SCROLL-STOPPER Visual (थंबनेल के लिए अनिवार्य):**
+  > थंबनेल का पहला एक-दो सेकंड इतना striking होना चाहिए कि कोई भी scroll करते हुए रुक जाए। Scene में एक element ऐसा रखो जो तुरंत curiosity या tension पैदा करे — जैसे: हैकर की आँखें सीधे camera की तरफ देख रही हों, या किसी screen पर बड़े लाल अक्षरों में "BREACH DETECTED" जैसा warning चमक रहा हो, या पूरी scene में एक अकेली हरी light जो viewer की नज़र खींचे।
+
+  > *"एक अंधेरे high-tech operations room में शक्तिशाली हैकर बैठा है — वह एक dark tactical jacket पहने हुए है जिसके **chest पर बाईं तरफ — ठीक वहाँ जहाँ company का logo होता है — 'SQL.SSL' का एक छोटा, metallic embroidered emblem है**, और **पीठ पर बहुत ही subtle, छोटे size में 'SQL.SSL' stitched है** — जैसे किसी elite unit का insignia हो। कमरे की बड़ी curved glass building की floor-to-ceiling windows के बाहर रात की city दिख रही है — उन windows पर projection-mapped हल्के नीले/हरे रंग में बहता हुआ code है, और उस code के बीच में एक कोने पर बेहद छोटे font में 'sql.ssl' लिखा है जैसे किसी system signature की तरह। 8 से 10 holographic monitors हैकर के आगे floating हैं — हर screen पर network maps, terminal output और live data streams; किसी एक monitor के corner में '> sql.ssl' terminal line visible है। पूरा scene cinematic और immersive है — कोई भी element obviously promotional नहीं लगता। साइबरपंक एनीमे स्टाइल, 9:16 आस्पेक्ट रेश्यो, पूरी तरह illustrated/painted, कोई real फ़ोटो नहीं।"*
+
+- **इमेज 2–4 (घटना का परिचय):** हमले की जगह/कंपनी/देश — 3 अलग angles से
+- **इमेज 5–7 (हमले का तरीका):** हैकिंग की प्रक्रिया step-by-step दृश्य रूप में
+- **इमेज 8–10 (प्रभाव — संस्था):** सर्वर टूटते हुए, डेटा चोरी, system crash
+- **इमेज 11–13 (प्रभाव — आम लोग):** आम व्यक्ति का डेटा/पैसा खतरे में — close-up और wide shot दोनों
+- **इमेज 14–15 (हैकर):** साइबर अपराधी का दृश्य — identity और operation दोनों
+- **इमेज 16–17 (वैश्विक):** विश्व मानचित्र पर साइबर खतरा फैला हुआ
+- **इमेज 18–20 (बचाव 1 & 2):** दोनों उपायों की visual — symbol, action और result
+- **इमेज 21–22 (CTA):** जागरूकता और शेयर का आह्वान — powerful closing frame
+- **इमेज 23–25 (Buffer/Extra — अगर script लंबी हो):** कोई भी strong mid-story visual जो engagement बढ़ाए
+
+**उपयोग किया गया टूल:** `default_api.generate_image`
+
+---
+
+## STEP 3B — [NEW] Ken Burns Animation — हर इमेज को Motion दो
+
+> 🎬 **यह step क्यों ज़रूरी है:**
+> Static images का slideshow Instagram algorithm detect कर लेता है और उसे कम distribute करता है। Ken Burns effect (slow zoom/pan) हर image को एक real motion video जैसा बना देता है — **watch time बढ़ता है, algorithm ज़्यादा push करता है।**
+
+```bash
+#!/bin/bash
+
+# ── Ken Burns Effect — हर इमेज पर slow zoom या pan लगाओ ───────────────────────
+NUM_IMAGES=20  # जितनी इमेज बनाई हों
+IMAGE_DURATION=2.0  # STEP 2C से लिया हुआ value यहाँ डालो
+
+# FPS और frames calculate करो
+FPS=30
+FRAMES=$(echo "$IMAGE_DURATION * $FPS" | bc | awk '{printf "%d", $1}')
+
+# हर इमेज पर Ken Burns apply करो — animated clip बनाओ
+for i in $(seq 1 $NUM_IMAGES); do
+
+  # Alternate: zoom-in और zoom-out + slight pan — variety के लिए
+  if [ $(( i % 3 )) -eq 0 ]; then
+    # Zoom In + Slight Left Pan
+    ZOOM_FILTER="zoompan=z='zoom+0.0015':x='iw/2-(iw/zoom/2)-((iw/zoom/2)*0.03*on/$FRAMES)':y='ih/2-(ih/zoom/2)':d=$FRAMES:s=1080x1920:fps=$FPS"
+  elif [ $(( i % 3 )) -eq 1 ]; then
+    # Zoom Out (start zoomed, pull back)
+    ZOOM_FILTER="zoompan=z='if(lte(zoom,1.0),1.5,max(1.001,zoom-0.0015))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=$FRAMES:s=1080x1920:fps=$FPS"
+  else
+    # Zoom In + Slight Right Pan
+    ZOOM_FILTER="zoompan=z='zoom+0.0015':x='iw/2-(iw/zoom/2)+((iw/zoom/2)*0.03*on/$FRAMES)':y='ih/2-(ih/zoom/2)':d=$FRAMES:s=1080x1920:fps=$FPS"
+  fi
+
+  ffmpeg -y -loop 1 -i /home/ubuntu/image_${i}.png \
+    -vf "$ZOOM_FILTER" \
+    -t $IMAGE_DURATION \
+    -c:v libx264 -pix_fmt yuv420p \
+    /home/ubuntu/clip_${i}.mp4
+
+  echo "Clip $i animated ✓"
+done
+
+echo "सभी clips animated — Ken Burns complete!"
+
+# ── सभी animated clips को एक list में लिखो ───────────────────────────────────
+> /home/ubuntu/clips.txt
+for i in $(seq 1 $NUM_IMAGES); do
+  echo "file '/home/ubuntu/clip_${i}.mp4'" >> /home/ubuntu/clips.txt
+done
+echo "clips.txt तैयार ✓"
+
+# ── सभी clips को एक video में जोड़ो (बिना audio) ─────────────────────────────
+ffmpeg -y -f concat -safe 0 -i /home/ubuntu/clips.txt \
+  -c:v libx264 -pix_fmt yuv420p \
+  /home/ubuntu/video_no_audio.mp4
+
+echo "Animated video (बिना audio) तैयार ✓"
+```
+
+> **नोट:** यह STEP पूरा होने के बाद `/home/ubuntu/video_no_audio.mp4` तैयार होगा। STEP 6 में इसी file को use करो।
+
+---
+
+## STEP 4 — कैप्शन जनरेशन
+
+STEP 0 की न्यूज़ के आधार पर नया हिंदी कैप्शन और हैशटैग:
+- न्यूज़ की एक-लाइन झलक
+- जागरूकता का संदेश
+- Call-to-Action
+
+> **Follow CTA — दो variations हैं, इन्हें alternate (बारी-बारी) use करो:**
+>
+> **Variation 1 (Standard — Follow-focused):**
+> *"अगर आप Hacking और Cyber Security से जुड़े ऐसे videos देखना चाहते हैं — तो अभी Follow करें @sql.ssl।"*
+>
+> **Variation 2 (Family-Safety — ज़्यादा Share पाने के लिए, खासकर Category B/E/A वाले दिनों पर use करो):**
+> *"इस video को अपने parents और दोस्तों को ज़रूर भेजें — ताकि वो भी safe रहें। ऐसी जानकारी रोज़ पाने के लिए @sql.ssl को Follow करें।"*
+>
+> **Caption में CTA इस तरह लिखें (दिन के topic के हिसाब से इनमें से एक चुनो):**
+>
+> Caption Style A:
+> 🔔 Hacking और Cyber Security की दुनिया जानने के लिए **@sql.ssl को Follow करें** — और यह Reel उन दोस्तों को ज़रूर Share करें जिन्हें इसकी ज़रूरत है। ⚠️
+>
+> Caption Style B (Family-Safety angle):
+> ⚠️ यह video अपने **Parents और Family Group में ज़रूर Share करें** — एक click आपके अपनों को बड़े नुकसान से बचा सकता है। ऐसी awareness रोज़ पाने के लिए **@sql.ssl Follow करें।** 🔔
+>
+> 📌 **Saveable Content Tip:** अगर topic ऐसा है जिसमें कोई useful list/tip हो (helpline numbers, safety steps), तो caption में लिखो: *"इसे Save कर लो — काम आएगा! 📌"*
+
+---
+
+### 🏷️ [UPDATED] Hashtag Strategy — 3 Tier System
+
+> ❌ **पुराना तरीका गलत था:** 8-10 random hashtags डालने से बड़े hashtags में रील 10 seconds में डूब जाती है।
+> ✅ **नया तरीका:** 3 तरह के hashtags mix करो — **हर रोज़ exact यही formula follow करो।**
+
+**Formula: 3 Large + 4 Medium + 3 Niche = कुल 10 hashtags**
+
+| Type | Examples | क्यों |
+|---|---|---|
+| **Large (3)** — करोड़ों posts | #cybersecurity #hacking #scamalert | Brand awareness, global reach |
+| **Medium (4)** — लाखों posts | #indiacybersecurity #onlinesafety #datasecurity #cyberawareness | Targeted reach, less competition |
+| **Niche (3)** — हज़ारों posts | #sqlssl #cybernewshindi #hackinghindu | High rank chance, loyal community |
+
+**हर रील पर ready-to-use hashtag set (topic के हिसाब से बदलो):**
+
+```
+#cybersecurity #hacking #scamalert
+#indiacybersecurity #onlinesafety #datasecurity #cyberawareness
+#sqlssl #cybernewshindi #saibarsurakshahindu
+```
+
+> 📌 **Niche hashtag `#sqlssl` हर रील में रखो** — यह तुम्हारा brand hashtag है, इसे कभी मत हटाओ।
+
+---
+
+## STEP 5 — बैकग्राउंड म्यूज़िक
+
+**अवधि: $VOICE_DURATION सेकंड** (fixed 20s नहीं)
+
+### 🔊 [UPDATED] म्यूज़िक प्रॉम्प्ट — Dark Cyberpunk Electronic Beat
+
+> ❌ **पुराना BGM गलत था:** Beat-less / tempo-free dark drone ambient — यह Instagram पर energy नहीं देता, viewer skip कर देता है।
+> ✅ **नया BGM:** Subtle rhythmic cyberpunk beat — dark energy के साथ — voice को support करे, दबाए नहीं।
+
+> *"केवल इंस्ट्रुमेंटल, कोई वोकल्स नहीं। [$VOICE_DURATION]-सेकंड का ट्रैक। शैली: **Dark Cyberpunk Electronic / Cinematic Thriller Beat।** मूड: **रहस्यमय, तनावपूर्ण, energetic — जैसे कोई साइबर ऑपरेशन real-time में चल रहा हो।** Instrumentation: **Low Sub-Bass, subtle rhythmic hi-hats (soft, not aggressive), dark synth layers, atmospheric electronic texture।** BPM: **80–100 — steady और controlled, कोई drops या sudden changes नहीं।** Volume curve: **पहले 3 seconds में धीरे-धीरे आए (fade-in), आखिरी 3 seconds में धीरे-धीरे जाए (fade-out)।**"*
+
+> ✅ **इन चीज़ों को ज़रूर रखें:**
+> - Subtle rhythmic hi-hats या light electronic pulse — energy बनाए रखे
+> - Steady low bass — video को weight दे
+> - Dark synth atmosphere — cybersecurity vibe maintain करे
+> - Smooth fade-in और fade-out
+
+> 🚫 **इन चीज़ों को बाहर रखें:**
+> - Heavy drum drops या aggressive beats
+> - तेज़ या अचानक आने वाली sounds
+> - कोई भी vocal या singing
+> - EDM या party style music
+
+**उपयोग किया गया टूल:** `default_api.generate_music`
+
+---
+
+## STEP 6 — वीडियो असेंबली (Voice Over Duration से Match)
+
+> **वीडियो की कुल लंबाई = $VOICE_DURATION — कोई fixed -t 20 नहीं।**
+> **Note:** STEP 3B में video_no_audio.mp4 पहले से बन चुकी है। यहाँ सिर्फ audio mix करना है।
+
+```bash
+#!/bin/bash
+
+# ── Voice Over Duration लो ────────────────────────────────────────────────────
+VOICE_DURATION=$(ffprobe -v error -show_entries format=duration \
+  -of default=noprint_wrappers=1:nokey=1 /home/ubuntu/narration.wav)
+echo "Voice Over Duration: $VOICE_DURATION sec"
+
+# ── Audio Mix करें — Final Video बनाएँ ───────────────────────────────────────
+# Voice Over Volume: 2.2 (भारी, शक्तिशाली आवाज़ — clearly dominant)
+# BGM Volume: 0.30 (background में subtle — voice को दबाए नहीं, energy दे)
+ffmpeg -y \
+  -i /home/ubuntu/video_no_audio.mp4 \
+  -i /home/ubuntu/narration.wav \
+  -i /home/ubuntu/bgm.wav \
+  -filter_complex \
+    "[1:a]volume=2.2[a1]; \
+     [2:a]volume=0.30,afade=t=in:ss=0:d=3,afade=t=out:st=$(echo "$VOICE_DURATION - 3" | bc):d=3[a2]; \
+     [a1][a2]amix=inputs=2:duration=first[aout]" \
+  -map 0:v \
+  -map "[aout]" \
+  -c:v copy \
+  -c:a aac \
+  -t $VOICE_DURATION \
+  /home/ubuntu/cybersecurity_reel.mp4
+
+echo "Final Video तैयार!"
+echo "Video Duration = Voice Over Duration = $VOICE_DURATION seconds"
+```
+
+> **Volume नोट:**
+> - `Voice Over (SQL 💉): 2.2` — आवाज़ dominant और साफ — viewer clearly समझे
+> - `BGM: 0.30` — नया rhythmic BGM सिर्फ atmosphere और energy दे — voice को न दबाए
+> - BGM में `afade=in` और `afade=out` — smooth start और end, कोई abrupt cut नहीं
+
+---
+
+## ✅ FINAL SELF-VERIFICATION CHECKLIST (Upload से पहले — अनिवार्य)
+
+> ⚠️ **STEP 7 (Upload) शुरू करने से पहले, AI नीचे दिए गए हर point को check करे और अपने output में लिखे "✅ verified" या "❌ missing — fixing now"। अगर कोई भी point ❌ है, तो पहले उसे ठीक करो — उसके बाद ही upload करो।**
+
+```
+[ ] Voice Over — Gemini TTS + Rasalgethi + Director's Notes (deep/serious) से बना है?
+[ ] Voice Duration नापी गई और सभी images/BGM उसी duration पर adjust हुए?
+[ ] कुल Images = 18-25 हैं?
+[ ] हर image में @sql.ssl branding naturally embedded है?
+[ ] हर image के center/middle zone में Hindi text overlay है (key line) — bottom में नहीं?
+[ ] हर image, उस moment की voice line से 100% match करती है (Voice-Image Sync Table के अनुसार)?
+[ ] Ken Burns animation सभी clips पर लगा है (video_no_audio.mp4 बना है, plain slideshow नहीं)?
+[ ] BGM = Dark Cyberpunk Electronic (80-100 BPM), fade-in/out के साथ?
+[ ] Final video duration = Voice duration (कोई fixed -t 20 नहीं)?
+[ ] Caption में Follow CTA है?
+[ ] Hashtags = 3 Large + 4 Medium + 3 Niche (कुल 10, #sqlssl शामिल)?
+```
+
+> 🔴 **सभी 11 points ✅ होने तक STEP 7 (Upload) शुरू मत करो।**
+
+---
+
+## STEP 7 — इंस्टाग्राम पर अपलोड
+
+**उपयोग किए गए टूल्स:** `manus-upload-file` और `manus-mcp-cli`
+
+```bash
+manus-mcp-cli tool call create_instagram --server instagram --input '{
+  "type": "reels",
+  "caption": "[STEP 4 का आज का नया कैप्शन यहाँ लिखें]",
+  "media": [
+    {
+      "type": "video",
+      "media_url": "[CDN_VIDEO_URL_HERE]"
+    }
+  ],
+  "share_to_feed": true
+}'
+```
+
+### ⏰ [NEW] Posting Time — सबसे ज़रूरी बात
+
+> **हमेशा रील 7:30 PM – 8:30 PM IST के बीच upload करो।**
+> यह India में Instagram का peak active time है — algorithm इसी window में नई reels को explore में push करता है।
+> Kuwait time में यह = **5:00 PM – 6:00 PM AST** होगा।
+>
+> ❌ **कभी भी random time पर upload मत करो** — सुबह 10 बजे या दोपहर upload करने से बहुत कम reach मिलती है।
+
+---
+
+### 📲 रील अपलोड करते समय इंस्टाग्राम में ये Settings ज़रूर करें:
+
+> यह settings अमेरिका और बाकी दुनिया के viewers तक रील को उनकी भाषा में पहुँचाने के लिए अनिवार्य हैं।
+
+1. **रील अपलोड करो** — हमेशा की तरह इंस्टाग्राम पर रिकॉर्ड या अपलोड करो।
+2. **Caption वाले Share page पर** — सबसे नीचे **"More options"** (या Advanced Settings) पर tap करो।
+3. **"Translate voices with Meta AI"** — यह option मिलेगा, इसे **Toggle ON** कर दो।
+4. **"Translation settings"** में जाओ — वह भाषाएं select करो जिनमें रील डब होनी चाहिए (जैसे **English, Arabic** — यह international audience के लिए ज़रूरी है)।
+5. **"Add lip syncing"** — यह option भी **ON** कर दो ताकि डबिंग एकदम natural लगे।
+6. **रील Share कर दो!**
+
+> 🎤 **ज़रूरी बात:** Meta AI translation feature तभी सबसे अच्छा काम करता है जब:
+> - Voice over बिल्कुल **clear** हो (कोई background noise नहीं)
+> - BGM volume बहुत ज़्यादा न हो (इसीलिए हमने BGM 0.30 पर रखा है)
+> - आवाज़ और background music का balance सही हो
+
+---
+
+### 💬 [NEW] Upload के बाद — पहला 1 घंटा सबसे ज़रूरी
+
+> **Instagram का Golden Hour:** रील upload होने के पहले 60 minutes में जितना engagement आएगा — algorithm उसी से decide करता है कि इसे कितने लोगों को दिखाना है।
+
+**Upload के बाद यह ज़रूर करो:**
+1. **अपनी Story पर रील share करो** — "नई रील आई है, ज़रूर देखो!" लिखकर
+2. **जो भी comments आएँ — 30 minutes के अंदर reply करो** — हर reply एक engagement signal है
+3. **2-3 बड़े cybersecurity accounts की recent posts पर meaningful comment करो** — उनके followers तुम्हें discover करेंगे
+4. **किसी friend से Like और Share करवाओ** — शुरुआत में यह push ज़रूरी है
+
+---
+
+## सही क्रम — Quick Summary v2.0 (इसे कभी मत तोड़ो)
+
+```
+STEP 0  → आज की LIVE न्यूज़ रिसर्च (real-time web search — पुरानी news नहीं)
+STEP 1  → 90-120 शब्दों की Hindi Script (18-25 visual moments में)
+          | पहली line = SCROLL-STOPPER | आखिरी line = @sql.ssl Follow CTA
+STEP 2A → SQL 💉 — Gemini TTS | Voice: Rasalgethi | भारी, दमदार — Conversational & Natural style
+STEP 2B → ffprobe से VOICE_DURATION नापो
+STEP 2C → IMAGE_DURATION = VOICE_DURATION ÷ NUM_IMAGES (18–25)
+STEP 3  → 18-25 इमेज बनाओ
+          | 100% voice-image accuracy
+          | इमेज 1 = scroll-stopper thumbnail
+          | हर इमेज में @sql.ssl naturally embedded
+          | [UPDATED] हर इमेज पर CENTER text overlay (key line bold Hindi में, bottom में नहीं)
+STEP 3B → [NEW] Ken Burns Animation — हर इमेज पर slow zoom/pan लगाओ
+          | video_no_audio.mp4 तैयार होगी
+STEP 4  → Caption + [NEW] 3-Tier Hashtags (3 Large + 4 Medium + 3 Niche) + Follow CTA
+STEP 5  → [UPDATED] BGM बनाओ — Dark Cyberpunk Electronic Beat, 80-100 BPM
+          | VOICE_DURATION जितना लंबा | fade-in + fade-out
+STEP 6  → Video Assemble (Voice: 2.2 | BGM: 0.30 | BGM fade-in/out | duration = VOICE_DURATION)
+STEP 7  → [NEW] 7:30–8:30 PM IST पर Upload
+          | Instagram Upload + Meta AI Translation ON + Lip Sync ON
+          | [NEW] Story share + Comments reply (पहला 1 घंटा)
+```
+
+---
+
+> 📌 **याद रखो:** Account नया है — algorithm को trust बनाने में 3-4 महीने लगते हैं। Daily posting + quality content + engagement = growth guaranteed है। रुको मत, बस सही तरीके से करते रहो। 💪

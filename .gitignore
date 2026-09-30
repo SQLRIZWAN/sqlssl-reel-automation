@@ -1,0 +1,10 @@
+output/
+node_modules/
+*.wav
+*.mp3
+*.mp4
+*.log
+assets/fonts/
+.DS_Store
+.env
+*.key

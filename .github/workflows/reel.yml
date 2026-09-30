@@ -1,0 +1,78 @@
+name: Reel Automation (SQL.SSL)
+
+on:
+  schedule:
+    # IST = UTC+5:30 → 04:00 IST = 22:30 UTC (previous day) | 16:00 IST = 10:30 UTC
+    - cron: '30 22 * * *'
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Slot (auto / morning / evening)'
+        required: false
+        default: 'auto'
+      mode:
+        description: 'Mode (full / dry-run / skip-upload)'
+        required: false
+        default: 'full'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: sqlssl-reel
+  cancel-in-progress: false
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install media dependencies (ffmpeg + bc + font + edge-tts)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg bc fonts-noto-core fonts-noto-extra
+          pip3 install --quiet --disable-pip-version-check --break-system-packages edge-tts \
+            || pip3 install --quiet --disable-pip-version-check edge-tts
+
+      - name: Run reel pipeline
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          POLLINATIONS_TOKEN: ${{ secrets.POLLINATIONS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MEDIA_BRANCH: media
+        run: |
+          ARGS=()
+          if [ "${{ github.event.inputs.slot }}" != "" ]; then ARGS+=(--slot=${{ github.event.inputs.slot }}); fi
+          if [ "${{ github.event.inputs.mode }}" = "dry-run" ]; then ARGS+=(--dry-run); fi
+          if [ "${{ github.event.inputs.mode }}" = "skip-upload" ]; then ARGS+=(--skip-upload); fi
+          bash scripts/run.sh "${ARGS[@]}"
+
+      - name: Upload output as artifact (video + logs)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-output-${{ github.run_number }}
+          path: |
+            output/cybersecurity_reel.mp4
+            output/verify_report.txt
+            output/meta.json
+            output/caption.txt
+            output/pipeline.log
+          retention-days: 14
+          if-no-files-found: warn
