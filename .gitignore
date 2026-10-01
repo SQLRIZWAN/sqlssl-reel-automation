@@ -4,7 +4,6 @@ node_modules/
 *.mp3
 *.mp4
 *.log
-assets/fonts/
 .DS_Store
 .env
 *.key
